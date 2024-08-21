@@ -32,7 +32,6 @@ final class SectionHeader: UICollectionViewCell {
         label.textColor = .ypBlack
         label.font = UIFont.systemFont(ofSize: 19, weight: .bold)
         label.textAlignment = .left
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -44,7 +43,7 @@ final class SectionHeader: UICollectionViewCell {
     // MARK: - Private Functions
 
     private func setUp() {
-        contentView.addSubview(titleLabel)
+        contentView.addSubviews([titleLabel])
         
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),

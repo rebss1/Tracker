@@ -39,7 +39,6 @@ final class CollectionHeader: UICollectionViewCell {
         stack.backgroundColor = .ypLightGrey
         stack.layer.cornerRadius = 16
         stack.alignment = .center
-        stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
     
@@ -55,7 +54,6 @@ final class CollectionHeader: UICollectionViewCell {
         textField.addTarget(self,
                             action: #selector(textFieldDidChange),
                             for: .editingChanged)
-        textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
     
@@ -82,7 +80,6 @@ final class CollectionHeader: UICollectionViewCell {
     // MARK: - Private Functions
 
     private func setUp() {
-        contentView.translatesAutoresizingMaskIntoConstraints = true
         contentView.addSubviews([textField, containerStack])
         containerStack.addArrangedSubview(categoryButton)
         categoryButton.layer.cornerRadius = 16

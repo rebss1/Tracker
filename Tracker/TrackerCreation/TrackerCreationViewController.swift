@@ -30,7 +30,6 @@ final class TrackerCreationViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.backgroundColor = .ypWhite
         collectionView.allowsMultipleSelection = true
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
     
@@ -40,9 +39,9 @@ final class TrackerCreationViewController: UIViewController {
     }
     
     private func setUp() {
-        navigationItem.title = "New Tracker"
+        navigationItem.title = "New tracker"
         view.backgroundColor = .ypWhite
-        view.addSubview(collectionView)
+        view.addSubviews([collectionView])
         
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -75,7 +74,7 @@ extension TrackerCreationViewController: UICollectionViewDataSource {
             return collectionHeader
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmojiCell.identifier, for: indexPath)
-            let emoji = emojiList[indexPath.row]
+            let emoji = Constants.emojiList[indexPath.row]
             guard let emojiCell = cell as? EmojiCell
             else { return UICollectionViewCell() }
             emojiCell.setupCell(emoji: emoji)
@@ -83,11 +82,10 @@ extension TrackerCreationViewController: UICollectionViewDataSource {
         case 2:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ColorCell.identifier, for: indexPath)
             guard let colorCell = cell as? ColorCell,
-                  let color = UIColor(named: colorList[indexPath.row])
+                  let color = UIColor(named: Constants.colorList[indexPath.row])
             else { return UICollectionViewCell() }
             colorCell.setupCell(color: color)
             return colorCell
-            
         case 3:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionFooter.identifier, for: indexPath)
             guard let collectionFooter = cell as? CollectionFooter
@@ -127,10 +125,10 @@ extension TrackerCreationViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch indexPath.section {
         case 1:
-            let emoji = emojiList[indexPath.row]
+            let emoji = Constants.emojiList[indexPath.row]
             trackerManager.changeEmoji(emoji: emoji)
         case 2:
-            let color = colorList[indexPath.row]
+            let color = Constants.colorList[indexPath.row]
             trackerManager.changeColor(color: color)
         default:
             return

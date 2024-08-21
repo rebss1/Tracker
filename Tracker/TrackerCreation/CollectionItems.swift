@@ -8,13 +8,13 @@
 import Foundation
 
 struct Item {
-    var title: String
-    var data: [String]
+    let title: String
+    let data: [String]
 }
 
 let collectionItems = [
     Item(title: "", data: [""]),
-    Item(title: "Emoji", data: emojiList),
-    Item(title: "Color", data: colorList),
+    Item(title: "Emoji", data: Constants.emojiList),
+    Item(title: "Color", data: Constants.colorList),
     Item(title: "", data: [""])
 ]

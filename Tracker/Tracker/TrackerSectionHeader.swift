@@ -18,7 +18,6 @@ final class TrackerSectionHeader: UICollectionReusableView {
 
     private lazy var titleLabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 19, weight: .bold)
         label.textColor = .ypBlack
         return label
@@ -34,7 +33,7 @@ final class TrackerSectionHeader: UICollectionReusableView {
     // MARK: - Private Methods
     
     private func setUp() {
-        addSubview(titleLabel)
+        addSubviews([titleLabel])
 
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 16),

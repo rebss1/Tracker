@@ -24,6 +24,6 @@ extension UIView {
     }
 }
 
-class TapGestureRecognizer: UITapGestureRecognizer {
+final class TapGestureRecognizer: UITapGestureRecognizer {
     var action: (() -> Void)?
 }

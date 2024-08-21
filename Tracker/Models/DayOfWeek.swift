@@ -18,25 +18,25 @@ enum DayOfWeek: String, CaseIterable {
 
     var shortName: String {
         switch self {
-            case .monday:     return "Mon"
-            case .tuesday:    return "Tue"
-            case .wednesday:  return "Wed"
-            case .thursday:   return "Thu"
-            case .friday:     return "Fri"
-            case .saturday:   return "Sat"
-            case .sunday:     return "Sun"
+            case .monday: return "Mon"
+            case .tuesday: return "Tue"
+            case .wednesday: return "Wed"
+            case .thursday: return "Thu"
+            case .friday: return "Fri"
+            case .saturday: return "Sat"
+            case .sunday: return "Sun"
         }
     }
 
     var fullName: String {
         switch self {
-            case .monday:    return "Monday"
-            case .tuesday:   return "Tuesday"
+            case .monday: return "Monday"
+            case .tuesday: return "Tuesday"
             case .wednesday: return "Wednesday"
-            case .thursday:  return "Thursday"
-            case .friday:    return "Friday"
-            case .saturday:  return "Saturday"
-            case .sunday:    return "Sunday"
+            case .thursday: return "Thursday"
+            case .friday: return "Friday"
+            case .saturday: return "Saturday"
+            case .sunday: return "Sunday"
         }
     }
 

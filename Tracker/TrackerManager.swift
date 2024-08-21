@@ -96,23 +96,23 @@ final class TrackerManager {
     }
     
     func changeColor(color: String?) {
-        self.newTracker.color = color ?? ""
+        self.newTracker = newTracker.update(color: color ?? "")
         updateCreation()
     }
     
     func changeEmoji(emoji: String?) {
-        self.newTracker.emoji = emoji ?? ""
+        self.newTracker = newTracker.update(emoji: emoji ?? "")
         updateCreation()
     }
     
     func changeName(name: String?) {
-        newTracker.name = name ?? ""
+        self.newTracker = newTracker.update(name: name ?? "")
         updateCreation()
     }
     
     func changeSchedule() {
         let schedule = DayOfWeek.scheduleToString(schedule: week)
-        newTracker.schedule = schedule
+        self.newTracker = newTracker.update(schedule: schedule)
         updateCreation()
     }
     
@@ -123,7 +123,7 @@ final class TrackerManager {
     }
     
     func changeFrequency(frequency: TrackerFrequency) {
-        newTracker.frequency = frequency
+        self.newTracker = newTracker.update(frequency: frequency)
         updateCreation()
     }
     

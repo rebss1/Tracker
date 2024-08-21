@@ -10,11 +10,11 @@ import UIKit
 
 final class StubView: UIView {
     
-    var emoji = ""
-    var text = ""
+    private var emoji = ""
+    private var text = ""
     
-    lazy var image = UIImageView()
-    lazy var label = UILabel()
+    private lazy var image = UIImageView()
+    private lazy var label = UILabel()
     
     init(emoji: String,
          text: String) {

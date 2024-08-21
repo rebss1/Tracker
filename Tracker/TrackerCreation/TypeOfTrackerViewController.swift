@@ -54,12 +54,12 @@ final class TypeOfTrackerViewController: UIViewController {
     // MARK: - Configure
     
     private func setUp() {
+        navigationItem.title = "Tracker creation"
         view.backgroundColor = .ypWhite
-        view.addSubview(containerStack)
+        view.addSubviews([containerStack])
         containerStack.addArrangedSubview(regularDoButton)
         containerStack.addArrangedSubview(notRegularDoButton)
         
-        containerStack.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             containerStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             containerStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),

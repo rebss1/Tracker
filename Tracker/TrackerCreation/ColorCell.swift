@@ -41,7 +41,6 @@ final class ColorCell: UICollectionViewCell {
 
     private lazy var colorView: UIView = {
         let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
@@ -54,7 +53,7 @@ final class ColorCell: UICollectionViewCell {
     // MARK: - Public Methods
 
     private func setUp() {
-        contentView.addSubview(colorView)
+        contentView.addSubviews([colorView])
         colorView.layer.cornerRadius = 8
         
         NSLayoutConstraint.activate([

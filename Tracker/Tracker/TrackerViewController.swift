@@ -43,6 +43,10 @@ final class TrackerViewController: UIViewController {
         addObserver()
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     private func addObserver() {
         observer = NotificationCenter.default.addObserver(
             forName: TrackerViewController.reloadCollection,
@@ -55,8 +59,7 @@ final class TrackerViewController: UIViewController {
     
     private func setUpViews() {
         view.backgroundColor = .ypWhite
-        view.addSubview(collectionView)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubviews([collectionView])
         
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),

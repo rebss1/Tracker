@@ -101,10 +101,9 @@ final class TrackerCell: UICollectionViewCell {
         
         contentView.addSubviews([cellBackgroundView, quantityManagementView])
         cellBackgroundView.addSubviews([emojiBackground, textLabel])
-        emojiBackground.addSubview(emoji)
+        emojiBackground.addSubviews([emoji])
         quantityManagementView.addSubviews([quantityLabel, plusButton])
         
-        cellBackgroundView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             cellBackgroundView.topAnchor.constraint(equalTo: contentView.topAnchor),
             cellBackgroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -112,7 +111,6 @@ final class TrackerCell: UICollectionViewCell {
             cellBackgroundView.heightAnchor.constraint(equalToConstant: 90)
         ])
         
-        quantityManagementView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             quantityManagementView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             quantityManagementView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -120,7 +118,6 @@ final class TrackerCell: UICollectionViewCell {
             quantityManagementView.topAnchor.constraint(equalTo: cellBackgroundView.bottomAnchor)
         ])
         
-        emojiBackground.translatesAutoresizingMaskIntoConstraints = false
         emojiBackground.layer.cornerRadius = 12
         NSLayoutConstraint.activate([
             emojiBackground.topAnchor.constraint(equalTo: cellBackgroundView.topAnchor, constant: 12),
@@ -129,20 +126,17 @@ final class TrackerCell: UICollectionViewCell {
             emojiBackground.widthAnchor.constraint(equalToConstant: 24)
         ])
         
-        emoji.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             emoji.centerYAnchor.constraint(equalTo: emojiBackground.centerYAnchor),
             emoji.centerXAnchor.constraint(equalTo: emojiBackground.centerXAnchor)
         ])
         
-        textLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             textLabel.bottomAnchor.constraint(equalTo: cellBackgroundView.bottomAnchor, constant: -12),
             textLabel.leadingAnchor.constraint(equalTo: cellBackgroundView.leadingAnchor, constant: 12),
             textLabel.trailingAnchor.constraint(equalTo: cellBackgroundView.trailingAnchor, constant: -12),
         ])
         
-        plusButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             plusButton.widthAnchor.constraint(equalToConstant: 34),
             plusButton.heightAnchor.constraint(equalToConstant: 34),
@@ -150,7 +144,6 @@ final class TrackerCell: UICollectionViewCell {
             plusButton.trailingAnchor.constraint(equalTo: quantityManagementView.trailingAnchor, constant: -12)
         ])
         
-        quantityLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             quantityLabel.topAnchor.constraint(equalTo: quantityManagementView.topAnchor, constant: 16),
             quantityLabel.leadingAnchor.constraint(equalTo: quantityManagementView.leadingAnchor, constant: 12)

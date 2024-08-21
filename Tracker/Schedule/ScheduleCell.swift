@@ -33,7 +33,6 @@ final class ScheduleCell: UITableViewCell {
 
     private lazy var label: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .ypBlack
         label.font = UIFont.systemFont(ofSize: 17)
         label.textAlignment = .left
@@ -42,7 +41,6 @@ final class ScheduleCell: UITableViewCell {
     
     private lazy var switcher: UISwitch = {
         let switcher = UISwitch()
-        switcher.translatesAutoresizingMaskIntoConstraints = false
         switcher.onTintColor = .ypBlue
         switcher.addTarget(self, action: #selector(valueDidChange), for: .valueChanged)
         return switcher
@@ -73,8 +71,7 @@ final class ScheduleCell: UITableViewCell {
     }
     
     private func setUp() {
-        contentView.addSubview(label)
-        contentView.addSubview(switcher)
+        contentView.addSubviews([label, switcher])
         
         NSLayoutConstraint.activate([
             label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),

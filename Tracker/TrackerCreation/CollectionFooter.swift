@@ -38,7 +38,6 @@ final class CollectionFooter: UICollectionViewCell {
         stack.axis = .horizontal
         stack.distribution = .fillEqually
         stack.spacing = 8
-        stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
     
@@ -65,9 +64,9 @@ final class CollectionFooter: UICollectionViewCell {
     // MARK: - Private Functions
 
     private func setUp() {
+        contentView.addSubviews([containerStack])
         containerStack.addArrangedSubview(cancelButton)
         containerStack.addArrangedSubview(createButton)
-        contentView.addSubview(containerStack)
         
         NSLayoutConstraint.activate([
             containerStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),

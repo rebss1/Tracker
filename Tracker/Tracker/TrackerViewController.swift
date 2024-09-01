@@ -128,13 +128,15 @@ extension TrackerViewController: UICollectionViewDataSource {
         return trackerManager.filteredTrackers[section].trackers.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard 
+    func collectionView(_ collectionView: UICollectionView, 
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
+    {
+        guard
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerCell.identifier, for: indexPath) as? TrackerCell
         else { return UICollectionViewCell() }
         cell.delegate = self
         let tracker = trackerManager.filteredTrackers[indexPath.section].trackers[indexPath.row]
-        let count = trackerManager.trackerRecord[tracker.id]?.count ?? 0
+        let count = trackerManager.getTrackerCount(trackerID: tracker.id)
         let isCompleted = trackerManager.isTrackerCompleteForSelectedDay(trackerUUID: tracker.id) >= 0
         cell.setUpCell(tracker: tracker, count: count, isCompleted: isCompleted)
         return cell

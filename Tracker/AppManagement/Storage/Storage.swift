@@ -168,26 +168,4 @@ final class Storage: StorageProtocol {
             return []
         }
     }
-//    
-//    func deleteAllData() throws {
-//        // Получаем список всех сущностей (Entity) в Core Data
-//        guard let entities = context.persistentStoreCoordinator?.managedObjectModel.entities else {
-//            return
-//        }
-//        
-//        // Проходим по каждой сущности
-//        for entity in entities {
-//            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity.name!)
-//            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-//            
-//            // Пытаемся удалить объекты
-//            do {
-//                try context.execute(deleteRequest)
-//                try context.save()
-//            } catch let error as NSError {
-//                print(error.userInfo)
-//                return 
-//            }
-//        }
-//    }
 }

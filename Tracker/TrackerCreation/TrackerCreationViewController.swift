@@ -36,6 +36,7 @@ final class TrackerCreationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
+        addObserver()
     }
     
     private func setUp() {
@@ -49,6 +50,16 @@ final class TrackerCreationViewController: UIViewController {
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+    }
+    
+    private func addObserver() {
+        observer = NotificationCenter.default.addObserver(
+            forName: TrackerCreationViewController.reloadCollection,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.collectionView.reloadSections(IndexSet(arrayLiteral: 0, 3 ))
+        }
     }
 }
 

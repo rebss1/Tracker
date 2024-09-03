@@ -81,7 +81,7 @@ final class Storage: StorageProtocol {
         let records = getRecordsCoreData(of: trackerID)
         let index = records.firstIndex { Calendar.current.isDate($0.date ?? Date(), equalTo: date, toGranularity: .day) } ?? -1
         
-        if index > 0 {
+        if index >= 0 {
             context.delete(records[index])
         } else {
             let recordEntity = TrackerRecordCoreData(context: context)

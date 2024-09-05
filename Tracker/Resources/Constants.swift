@@ -29,4 +29,6 @@ enum Constants {
     static let colorList = [
         "cs1", "cs2", "cs3", "cs4", "cs5", "cs6", "cs7", "cs8", "cs9", "cs10", "cs11", "cs12", "cs13", "cs14", "cs15", "cs16", "cs17", "cs18"
     ]
+    
+    static let onboardingDefaultsKey = "alreadyShown"
 }

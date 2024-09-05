@@ -12,12 +12,11 @@ final class TrackerManager {
     
     // MARK: - Private Properties
     
+    private let storage = Storage.shared
     private(set) var selectedDay: Date = Date()
     private(set) var week: [DayOfWeekSwitch]
-    private(set) var trackerRecord:  [UUID: [Date]] = [:]
     private(set) var error: String?
     private(set) var newTracker: NewTracker
-    private var trackers: [TrackerCategory] = []
     private let defaultWeek = DayOfWeek.allCases.map { DayOfWeekSwitch(dayOfWeek: $0, isEnabled: false) }
     private let defaultNewTracker = NewTracker(frequency: .regular, name: "", color: "", emoji: "", schedule: "")
     
@@ -35,24 +34,38 @@ final class TrackerManager {
     }
     
     var filteredTrackers: [TrackerCategory] {
-        return trackers.map { category in
-                let filteredTrackers = category.trackers.filter { tracker in
-                    guard !tracker.schedule.isEmpty else {
-                        return true
-                    }
-                    let schedule = DayOfWeek.stringToSchedule(scheduleString: tracker.schedule)
-                        .map { String(describing: $0.dayOfWeek) }
-                    let selectedDay = selectedDay.dateToString()
-                    return schedule.contains(selectedDay)
+        storage.getCategories().map {
+            TrackerCategory(title: $0.title,
+                            trackers: $0.trackers.filter {
+                
+                if $0.schedule.isEmpty {
+                    return true
                 }
-                return TrackerCategory(title: category.title, trackers: filteredTrackers)
-            }.filter { !$0.trackers.isEmpty }
+                let schedule = DayOfWeek.stringToSchedule(scheduleString: $0.schedule).map { String(describing: $0.dayOfWeek)}
+                let selectedDayOfWeek = selectedDay.dateToString()
+                return schedule.contains(selectedDayOfWeek)
+            })
+        } .filter { !$0.trackers.isEmpty }
     }
+    
+    // MARK: - Trackers list methods
     
     func changeSelectedDay(selectedDay: Date) {
         self.selectedDay = selectedDay
         updateTrackers()
     }
+    
+    func updateDaysCounter(id: UUID) {
+        storage.makeRecord(with: id, at: selectedDay)
+        updateTrackers()
+    }
+    
+    func isTrackerCompleteForSelectedDay(trackerUUID: UUID) -> Int {
+        let records = storage.getRecords(of: trackerUUID)
+        return records.firstIndex(where: { Calendar.current.isDate($0.date, equalTo: selectedDay, toGranularity: .day) }) ?? -1
+    }
+    
+    // MARK: - Creation methods
     
     func updateTrackers() {
         NotificationCenter.default.post(name: TrackerViewController.reloadCollection, object: self)
@@ -63,56 +76,29 @@ final class TrackerManager {
     }
     
     func createTracker(category: String) {
-        let index = trackers.firstIndex(where: { $0.title == category }) ?? -1
         let tracker = Tracker(newTracker)
-        if index >= 0 {
-            let trackers = trackers[index].trackers + [tracker]
-            let category = TrackerCategory(title: category, trackers: trackers)
-            self.trackers.remove(at: index)
-            self.trackers.insert(category, at: index)
-        } else {
-            trackers = trackers + [TrackerCategory(title: category, trackers: [tracker])]
-        }
-        updateTrackers()
-    }
-    
-    func isTrackerCompleteForSelectedDay(trackerUUID: UUID) -> Int {
-        guard let trackerRecord = trackerRecord[trackerUUID] else { return -1 }
-        return trackerRecord.firstIndex(where: { Calendar.current.isDate($0, equalTo: selectedDay, toGranularity: .day) }) ?? -1
-    }
-    
-    func updateDaysCounter(id: UUID) {
-        if trackerRecord[id] != nil {
-            let completedPerDay = isTrackerCompleteForSelectedDay(trackerUUID: id)
-            if completedPerDay >= 0 {
-                trackerRecord[id]?.remove(at: completedPerDay)
-            } else {
-                trackerRecord[id]?.append(selectedDay)
-            }
-        } else {
-            trackerRecord[id] = [selectedDay]
-        }
+        storage.createTracker(with: tracker, categoryName: category)
         updateTrackers()
     }
     
     func changeColor(color: String?) {
-        self.newTracker = newTracker.update(color: color ?? "")
+        self.newTracker.color = color ?? ""
         updateCreation()
     }
     
     func changeEmoji(emoji: String?) {
-        self.newTracker = newTracker.update(emoji: emoji ?? "")
+        self.newTracker.emoji = emoji ?? ""
         updateCreation()
     }
     
     func changeName(name: String?) {
-        self.newTracker = newTracker.update(name: name ?? "")
+        self.newTracker.name = name ?? ""
         updateCreation()
     }
     
     func changeSchedule() {
         let schedule = DayOfWeek.scheduleToString(schedule: week)
-        self.newTracker = newTracker.update(schedule: schedule)
+        self.newTracker.schedule = schedule
         updateCreation()
     }
     
@@ -123,8 +109,12 @@ final class TrackerManager {
     }
     
     func changeFrequency(frequency: TrackerFrequency) {
-        self.newTracker = newTracker.update(frequency: frequency)
+        self.newTracker.frequency = frequency
         updateCreation()
+    }
+    
+    func getTrackerCount(trackerID: UUID) -> Int {
+        storage.getRecords(of: trackerID).count
     }
     
     func setError(error: String?) {

@@ -18,4 +18,5 @@ struct NewTracker {
     var color: String
     var emoji: String
     var schedule: String
+    var categoryName: String
 }

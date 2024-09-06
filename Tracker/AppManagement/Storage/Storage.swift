@@ -65,7 +65,7 @@ final class Storage: StorageProtocol {
         saveContext()
     }
     
-    private func createСategory(with categoryName: String) -> TrackerCategoryCoreData {
+    func createСategory(with categoryName: String) -> TrackerCategoryCoreData {
         if let existedCategory = getCategoryCoreData(by: categoryName) {
             return existedCategory
         }

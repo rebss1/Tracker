@@ -18,7 +18,7 @@ final class TrackerManager {
     private(set) var error: String?
     private(set) var newTracker: NewTracker
     private let defaultWeek = DayOfWeek.allCases.map { DayOfWeekSwitch(dayOfWeek: $0, isEnabled: false) }
-    private let defaultNewTracker = NewTracker(frequency: .regular, name: "", color: "", emoji: "", schedule: "")
+    private let defaultNewTracker = NewTracker(frequency: .regular, name: "", color: "", emoji: "", schedule: "", categoryName: "")
     
     private init() {
         self.week = defaultWeek
@@ -94,6 +94,10 @@ final class TrackerManager {
     func changeName(name: String?) {
         self.newTracker.name = name ?? ""
         updateCreation()
+    }
+    
+    func changeCategory(categoryName: String?) {
+        self.newTracker.categoryName = categoryName ?? ""
     }
     
     func changeSchedule() {

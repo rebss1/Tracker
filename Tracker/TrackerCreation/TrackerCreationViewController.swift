@@ -256,7 +256,7 @@ extension TrackerCreationViewController: UICollectionViewDelegateFlowLayout {
 
 extension TrackerCreationViewController: CollectionFooterDelegate {
     func didTapCreateButton() {
-        trackerManager.createTracker(category: "First")
+        trackerManager.createTracker(category: trackerManager.newTracker.categoryName)
         let presentingViewController = self.presentingViewController
         presentingViewController?.presentingViewController?.dismiss(animated: true)
     }
@@ -269,6 +269,9 @@ extension TrackerCreationViewController: CollectionHeaderDelegate {
     }
     
     func openCategories() {
-        
+        let model = CategoryModel()
+        let viewModel = CategoryViewModel(model: model)
+        let viewController = CategoryViewController(viewModel: viewModel).wrapWithNavigationController()
+        self.present(viewController, animated: true)
     }
 }

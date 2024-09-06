@@ -65,7 +65,7 @@ final class CollectionHeader: UICollectionViewCell {
     
     private lazy var categoryButton = ListButton(
         title: "Category",
-        subTitle: "Main"
+        subTitle: trackerManager.newTracker.categoryName
     ) {
         self.delegate?.openCategories()
     }
@@ -128,6 +128,7 @@ final class CollectionHeader: UICollectionViewCell {
     
     func setupCell() {
         scheduleButton.setSubTitle(subtitle: trackerManager.newTracker.schedule)
+        categoryButton.setSubTitle(subtitle: trackerManager.newTracker.categoryName)
         textField.text = trackerManager.newTracker.name
     }
 }

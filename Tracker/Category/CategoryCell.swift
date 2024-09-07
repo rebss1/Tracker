@@ -27,6 +27,12 @@ final class CategoryCell: UITableViewCell {
         return imageView
     }()
     
+    private lazy var separator: UIView = {
+        let view = UIView()
+        view.backgroundColor = .ypGrey
+        return view
+    }()
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         checkmarkImage.isHidden = !selected
     }
@@ -45,7 +51,7 @@ final class CategoryCell: UITableViewCell {
     // MARK: - Private Methods
     
     private func setUp() {
-        addSubviews([titleLabel, checkmarkImage])
+        addSubviews([titleLabel, checkmarkImage, separator])
         
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: 75),
@@ -57,7 +63,12 @@ final class CategoryCell: UITableViewCell {
             checkmarkImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             checkmarkImage.widthAnchor.constraint(equalToConstant: 24),
             checkmarkImage.heightAnchor.constraint(equalToConstant: 24),
-            checkmarkImage.centerYAnchor.constraint(equalTo: centerYAnchor)
+            checkmarkImage.centerYAnchor.constraint(equalTo: centerYAnchor),
+            
+            separator.bottomAnchor.constraint(equalTo: bottomAnchor),
+            separator.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            separator.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            separator.heightAnchor.constraint(equalToConstant: 1)
         ])
     }
     
@@ -65,6 +76,7 @@ final class CategoryCell: UITableViewCell {
     
     func setUpCell(with category: TrackerCategory, isFirst: Bool, isLast: Bool) {
         titleLabel.text = category.title
+        separator.isHidden = isLast
         
         backgroundColor = .ypLightGrey
         clipsToBounds = true

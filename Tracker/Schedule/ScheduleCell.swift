@@ -46,15 +46,23 @@ final class ScheduleCell: UITableViewCell {
         return switcher
     }()
     
+    private lazy var separator: UIView = {
+        let view = UIView()
+        view.backgroundColor = .ypGrey
+        return view
+    }()
+    
     // MARK: - Public Methods
 
     func setupCell(schedule: DayOfWeekSwitch, isFirst: Bool, isLast: Bool) {
         label.text = schedule.dayOfWeek.fullName
         switcher.isOn = schedule.isEnabled
+        separator.isHidden = isLast
 
         backgroundColor = .ypLightGrey
         clipsToBounds = true
         layer.cornerRadius = 16
+        
         if isFirst {
             layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         } else if isLast {
@@ -71,17 +79,20 @@ final class ScheduleCell: UITableViewCell {
     }
     
     private func setUp() {
-        contentView.addSubviews([label, switcher])
+        contentView.addSubviews([label, switcher, separator])
         
         NSLayoutConstraint.activate([
             label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             label.centerYAnchor.constraint(equalTo: centerYAnchor),
-            label.trailingAnchor.constraint(equalTo: switcher.leadingAnchor)
-        ])
+            label.trailingAnchor.constraint(equalTo: switcher.leadingAnchor),
         
-        NSLayoutConstraint.activate([
             switcher.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            switcher.centerYAnchor.constraint(equalTo: centerYAnchor)
+            switcher.centerYAnchor.constraint(equalTo: centerYAnchor),
+            
+            separator.bottomAnchor.constraint(equalTo: bottomAnchor),
+            separator.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            separator.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            separator.heightAnchor.constraint(equalToConstant: 1)
         ])
     }
 }

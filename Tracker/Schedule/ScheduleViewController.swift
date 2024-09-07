@@ -19,8 +19,7 @@ final class ScheduleViewController: UIViewController {
         tableView.register(ScheduleCell.self, forCellReuseIdentifier: ScheduleCell.identifier)
         tableView.showsVerticalScrollIndicator = false
         tableView.contentInset = UIEdgeInsets(top: 24, left: 0, bottom: 24, right: 0)
-        tableView.separatorStyle = .singleLine
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.separatorStyle = .none
         return tableView
     }()
     

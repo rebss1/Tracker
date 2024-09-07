@@ -49,8 +49,7 @@ final class CategoryViewController: UIViewController {
         tableView.register(CategoryCell.self, forCellReuseIdentifier: CategoryCell.identifier)
         tableView.showsVerticalScrollIndicator = false
         tableView.contentInset = UIEdgeInsets(top: 24, left: 0, bottom: 24, right: 0)
-        tableView.separatorStyle = .singleLine
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.separatorStyle = .none
         return tableView
     }()
     
@@ -96,8 +95,8 @@ final class CategoryViewController: UIViewController {
             forName: CategoryViewController.reloadCollection,
             object: nil,
             queue: .main
-        ) {
-            [weak self] _ in self?.categoryTable.reloadData()
+        ) { [weak self] _ in
+            self?.categoryTable.reloadData()
         }
     }
     

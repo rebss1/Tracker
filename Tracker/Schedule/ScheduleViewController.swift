@@ -18,10 +18,8 @@ final class ScheduleViewController: UIViewController {
         tableView.dataSource = self
         tableView.register(ScheduleCell.self, forCellReuseIdentifier: ScheduleCell.identifier)
         tableView.showsVerticalScrollIndicator = false
-        tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.contentInset = UIEdgeInsets(top: 24, left: 0, bottom: 24, right: 0)
-        tableView.separatorStyle = .singleLine
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.separatorStyle = .none
         return tableView
     }()
     
@@ -46,9 +44,7 @@ final class ScheduleViewController: UIViewController {
     private func setUp() {
         navigationItem.title = "Schedule"
         view.backgroundColor = .ypWhite
-        doneButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(scheduleTable)
-        view.addSubview(doneButton)
+        view.addSubviews([scheduleTable, doneButton])
         
         NSLayoutConstraint.activate([
             scheduleTable.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),

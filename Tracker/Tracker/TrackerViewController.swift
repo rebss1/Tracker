@@ -196,6 +196,6 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
-        CGSize(width: collectionWidth, height: 46)
+        CGSize(width: collectionWidth, height: 52)
     }
 }

@@ -19,6 +19,7 @@ final class CategoryViewController: UIViewController {
     private var viewModel: CategoryViewModel
     private var observer: NSObjectProtocol?
     private var categories: [TrackerCategory] = []
+    private var selectedCategoryName: String?
     
     private let stubView = StubView(emoji: "dizzy",
                                     text: "Habits and events can be combined by meaning")
@@ -88,6 +89,10 @@ final class CategoryViewController: UIViewController {
         viewModel.categoriesBinding = { [weak self] categories in
             self?.categories = categories
         }
+        
+        viewModel.selectedCategoryName = { [weak self] name in
+            self?.selectedCategoryName = name
+        }
     }
 
     private func addObserver() {
@@ -145,8 +150,9 @@ extension CategoryViewController: UITableViewDataSource {
         let category = categories[indexPath.row]
         let isFirstCell = indexPath.row == 0
         let isLastCell = indexPath.row == categories.count - 1
+        let isSelected = selectedCategoryName == category.title
         
-        categoryCell.setUpCell(with: category, isFirst: isFirstCell, isLast: isLastCell)
+        categoryCell.setUpCell(with: category, isFirst: isFirstCell, isLast: isLastCell, isSelected: isSelected)
         
         return categoryCell
     }

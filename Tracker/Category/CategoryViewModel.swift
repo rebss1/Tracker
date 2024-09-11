@@ -13,6 +13,7 @@ final class CategoryViewModel {
     
     var categoriesBinding: Binding<[TrackerCategory]>?
     var isEmptyCategoriesBinding: Binding<Bool>?
+    var selectedCategoryName: Binding<String>?
     
     private let model: CategoryModel
     
@@ -23,6 +24,7 @@ final class CategoryViewModel {
     func loadUpdatedCategories() {
         categoriesBinding?(model.categories)
         isEmptyCategoriesBinding?(model.categories.isEmpty)
+        selectedCategoryName?(model.getCurrentCategoryName())
         updateCategories()
     }
     
@@ -34,6 +36,8 @@ final class CategoryViewModel {
     func didSelectRowAt(indexPath: IndexPath) {
         let categoryName = model.categories[indexPath.row].title
         model.changeCategory(to: categoryName)
+        selectedCategoryName?(model.getCurrentCategoryName())
+        updateCategories()
     }
     
     func didDoneButtonTapped() {

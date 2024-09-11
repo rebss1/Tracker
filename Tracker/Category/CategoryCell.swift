@@ -33,10 +33,6 @@ final class CategoryCell: UITableViewCell {
         return view
     }()
     
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        checkmarkImage.isHidden = !selected
-    }
-    
     // MARK: - Initializers
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -50,8 +46,14 @@ final class CategoryCell: UITableViewCell {
     
     // MARK: - Private Methods
     
+    func setCheckmarkSelected(_ selected: Bool) {
+        checkmarkImage.isHidden = !selected
+    }
+    
     private func setUp() {
-        addSubviews([titleLabel, checkmarkImage, separator])
+        selectionStyle = .none
+        
+        contentView.addSubviews([titleLabel, checkmarkImage, separator])
         
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: 75),
@@ -74,15 +76,18 @@ final class CategoryCell: UITableViewCell {
     
     // MARK: - Public Methods
     
-    func setUpCell(with category: TrackerCategory, isFirst: Bool, isLast: Bool) {
+    func setUpCell(with category: TrackerCategory, isFirst: Bool, isLast: Bool, isSelected: Bool) {
         titleLabel.text = category.title
         separator.isHidden = isLast
-        
+        setCheckmarkSelected(isSelected)
+    
         backgroundColor = .ypLightGrey
         clipsToBounds = true
         layer.cornerRadius = 16
         
-        if isFirst {
+        if isFirst && isLast {
+            layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        } else if isFirst {
             layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         } else if isLast {
             layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]

@@ -23,7 +23,7 @@ final class TypeOfTrackerViewController: UIViewController {
     }()
     
     private lazy var regularDoButton = Button(
-        title: "Habit",
+        title: NSLocalizedString("trackerRegularType", comment: ""),
         style: .normal,
         color: .ypBlack
     ) {
@@ -34,7 +34,7 @@ final class TypeOfTrackerViewController: UIViewController {
     }
     
     private lazy var notRegularDoButton = Button(
-        title: "Irregular action",
+        title: NSLocalizedString("trackerSingleType", comment: ""),
         style: .normal,
         color: .ypBlack
     ) {
@@ -54,7 +54,7 @@ final class TypeOfTrackerViewController: UIViewController {
     // MARK: - Configure
     
     private func setUp() {
-        navigationItem.title = "Tracker creation"
+        navigationItem.title = NSLocalizedString("trackerTypeTitle", comment: "")
         view.backgroundColor = .ypWhite
         view.addSubviews([containerStack])
         containerStack.addArrangedSubview(regularDoButton)

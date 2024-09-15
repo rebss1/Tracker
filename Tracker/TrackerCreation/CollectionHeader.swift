@@ -44,7 +44,7 @@ final class CollectionHeader: UICollectionViewCell {
     
     private lazy var textField: UITextField = {
         let textField = TextField()
-        textField.placeholder = "Enter tracker's name"
+        textField.placeholder = NSLocalizedString("trackerNamePlaceholder", comment: "")
         textField.delegate = self
         textField.backgroundColor = .ypLightGrey
         textField.layer.cornerRadius = 16
@@ -64,14 +64,14 @@ final class CollectionHeader: UICollectionViewCell {
     }()
     
     private lazy var categoryButton = ListButton(
-        title: "Category",
+        title: NSLocalizedString("categoryButtonTitle", comment: ""),
         subTitle: trackerManager.newTracker.categoryName
     ) {
         self.delegate?.openCategories()
     }
     
     private lazy var scheduleButton = ListButton(
-        title: "Schedule",
+        title: NSLocalizedString("scheduleButtonTitle", comment: ""),
         subTitle: trackerManager.newTracker.schedule
     ) {
         self.delegate?.openSchedule()
@@ -155,6 +155,6 @@ extension CollectionHeader: UITextFieldDelegate {
 
     @objc private func textFieldDidChange(textField: UITextField) {
         guard let length = textField.text?.count else { return }
-        trackerManager.setError(error: length < 38 ? nil : "38 character limit")
+        trackerManager.setError(error: length < 38 ? nil : NSLocalizedString("trackerNameLengthError", comment: ""))
     }
 }

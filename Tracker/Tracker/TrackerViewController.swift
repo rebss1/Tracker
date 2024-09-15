@@ -15,7 +15,7 @@ final class TrackerViewController: UIViewController {
     private let trackerManager = TrackerManager.shared
     
     private let stubView = StubView(emoji: "dizzy",
-                                    text: "What will we track?")
+                                    text: NSLocalizedString("emptyTrackersStubViewText", comment: ""))
     private lazy var collectionWidth = collectionView.frame.width
     private lazy var searchBar = UISearchBar(frame: .zero)
     
@@ -76,7 +76,7 @@ final class TrackerViewController: UIViewController {
                                   action: #selector(addTracker))
         add.tintColor = .ypBlack
         navigationItem.leftBarButtonItem = add
-        navigationItem.title = "Trackers"
+        navigationItem.title = NSLocalizedString("trackersTitle", comment: "")
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.searchController = UISearchController(searchResultsController: nil)
     }

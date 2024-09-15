@@ -6,3 +6,47 @@
   
 */
 
+"trackersTitle" = "Трекеры";
+"emptyTrackersStubViewText" = "Что будем отслеживать?";
+"dateFormat" = "EEEE";
+"cancelButtonTitle" = "Отменить";
+"creationButtonTitle" = "Создать";
+"onboardingTitleOne" = "Отслеживайте только то, что хотите";
+"onboardingTitleTwo" = "Даже если это не литры воды и йога";
+"onboardingButtonTitle" = "Вот это технологии!";
+"trackersTabTitle" = "Трекеры";
+"statisticsTabTitle" = "Статистика";
+"scheduleEveryday" = "Каждый день";
+"scheduleWorkingDay" = "Будние дни";
+"doneButtonTitle" = "Готово";
+"scheduleTitle" = "Расписание";
+"categoriesTitle" = "Категории";
+"categoryCreationButton" = "Создать новую категорию";
+"emptyCategoriesStubViewText" = "Привычки и события можно \n объединить по смыслу";
+"categoryCreationTitle" = "Новая категория";
+"trackerRegularType" = "Привычка";
+"trackerSingleType" = "Нерегулярное событие";
+"trackerTypeTitle" = "Создание трекера";
+"newtrackerCreationTitle" = "Новый трекер";
+"categoryButtonTitle" = "Категория";
+"scheduleButtonTitle" = "Расписание";
+"trackerNamePlaceholder" = "Ведите название трекера";
+"trackerNameLengthError" = "Ограничение 38 символов";
+"categoryEmoji" = "Эмоджи";
+"categoryColor" = "Цвет";
+
+"monday" = "Понедельник";
+"tuesday" = "Вторник";
+"wednesday" = "Среда";
+"thursday" = "Четверг";
+"friday" = "Пятница";
+"saturday" = "Суббота";
+"sunday" = "Воскресение";
+
+"mondayShort" = "Пн";
+"tuesdayShort" = "Вт";
+"wednesdayShort" = "Ср";
+"thursdayShort" = "Чт";
+"fridayShort" = "Пт";
+"saturdayShort" = "Сб";
+"sundayShort" = "Вс";

@@ -40,7 +40,7 @@ final class TrackerCreationViewController: UIViewController {
     }
     
     private func setUp() {
-        navigationItem.title = "New tracker"
+        navigationItem.title = NSLocalizedString("newtrackerCreationTitle", comment: "")
         view.backgroundColor = .ypWhite
         view.addSubviews([collectionView])
         

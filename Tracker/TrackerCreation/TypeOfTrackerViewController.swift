@@ -27,7 +27,7 @@ final class TypeOfTrackerViewController: UIViewController {
         style: .normal,
         color: .ypBlack
     ) {
-        self.trackerManager.reset()
+        self.trackerManager.reset(nil, categoryName: "")
         self.trackerManager.changeFrequency(frequency: .regular)
         let viewController = TrackerCreationViewController().wrapWithNavigationController()
         self.present(viewController, animated: true)
@@ -38,7 +38,7 @@ final class TypeOfTrackerViewController: UIViewController {
         style: .normal,
         color: .ypBlack
     ) {
-        self.trackerManager.reset()
+        self.trackerManager.reset(nil, categoryName: "")
         self.trackerManager.changeFrequency(frequency: .single)
         let viewController = TrackerCreationViewController().wrapWithNavigationController()
         self.present(viewController, animated: true)

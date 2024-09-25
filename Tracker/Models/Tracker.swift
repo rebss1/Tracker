@@ -14,13 +14,15 @@ struct Tracker {
     let emoji: String
     let schedule: String
     let createdAt: Date
+    let categoryName: String
     
     init(id: UUID,
          name: String,
          color: String,
          emoji: String,
          schedule: String,
-         createdAt: Date)
+         createdAt: Date,
+         categoryName: String)
     {
         self.id = id
         self.name = name
@@ -28,6 +30,7 @@ struct Tracker {
         self.emoji = emoji
         self.schedule = schedule
         self.createdAt = createdAt
+        self.categoryName = categoryName
     }
     
     init(_ newTracker: NewTracker) {
@@ -37,6 +40,7 @@ struct Tracker {
         self.emoji = newTracker.emoji
         self.schedule = newTracker.schedule
         self.createdAt = Date()
+        self.categoryName = newTracker.categoryName
     }
     
     init(from tracker: TrackerCoreData) {
@@ -46,5 +50,6 @@ struct Tracker {
         self.emoji = tracker.emoji ?? ""
         self.schedule = tracker.schedule ?? ""
         self.createdAt = tracker.createdAt ?? Date()
+        self.categoryName = tracker.categoryName ?? ""
     }
 }

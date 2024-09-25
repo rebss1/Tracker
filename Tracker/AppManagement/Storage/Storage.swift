@@ -92,6 +92,31 @@ final class Storage: StorageProtocol {
         saveContext()
     }
     
+    func pinTracker(with trackerId: UUID) {
+        let pinnedCategoryName = NSLocalizedString("pinned", comment: "")
+        let trackerEntity = getTracker(by: trackerId)
+        guard let trackerEntity else { return }
+        trackerEntity.categoryName = pinnedCategoryName
+        
+        saveContext()
+    }
+
+    func unpinTracker(with trackerId: UUID) {
+        let trackerEntity = getTracker(by: trackerId)
+        guard let trackerEntity else { return }
+        trackerEntity.categoryName = ""
+        
+        saveContext()
+    }
+
+    func deleteTracker(with trackerId: UUID) {
+        let trackerEntity = getTracker(by: trackerId)
+        guard let trackerEntity else { return }
+        context.delete(trackerEntity)
+       
+        saveContext()
+    }
+    
     //MARK: - Get Methods
     
     private func getTracker(by id: UUID) -> TrackerCoreData? {

@@ -18,7 +18,7 @@ final class TrackerManager {
     private(set) var error: String?
     private(set) var newTracker: NewTracker
     private let defaultWeek = DayOfWeek.allCases.map { DayOfWeekSwitch(dayOfWeek: $0, isEnabled: false) }
-    private let defaultNewTracker = NewTracker(frequency: .regular, name: "", color: "", emoji: "", schedule: "", categoryName: "")
+    private let defaultNewTracker = NewTracker(frequency: .regular, name: "", color: "", emoji: "", schedule: "", categoryName: "", createdAt: Date())
     
     private init() {
         self.week = defaultWeek
@@ -33,8 +33,29 @@ final class TrackerManager {
         && !newTracker.color.isEmpty
     }
     
+    var trackers: [TrackerCategory] {
+        var pinnedTrackers: [Tracker] = []
+        let pinnedCategoryName = NSLocalizedString("pinned", comment: "")
+        var categories = storage.getCategories().map {
+            TrackerCategory(
+                title: $0.title,
+                trackers: $0.trackers
+                    .filter {
+                        if $0.categoryName == pinnedCategoryName {
+                            pinnedTrackers.append($0)
+                            return false
+                        }
+                        return true
+                    }
+            )
+        }
+        let pinnedCategory = TrackerCategory(title: pinnedCategoryName, trackers: pinnedTrackers)
+        categories.insert(pinnedCategory, at: 0)
+        return categories
+    }
+    
     var filteredTrackers: [TrackerCategory] {
-        storage.getCategories().map {
+        let categories = trackers.map {
             TrackerCategory(title: $0.title,
                             trackers: $0.trackers.filter {
                 
@@ -46,6 +67,7 @@ final class TrackerManager {
                 return schedule.contains(selectedDayOfWeek)
             })
         } .filter { !$0.trackers.isEmpty }
+        return categories
     }
     
     // MARK: - Trackers list methods
@@ -129,12 +151,43 @@ final class TrackerManager {
         storage.getAllRecords().count
     }
     
+    func getTracker(by indexPath: IndexPath) -> Tracker {
+        filteredTrackers[indexPath.section].trackers[indexPath.row]
+    }
+
+    func getCategory(by indexPath: IndexPath) -> TrackerCategory {
+        storage.getCategories()[indexPath.section]
+    }
+    
+    func pinTracker(with indexPath: IndexPath) {
+        let tracker = getTracker(by: indexPath)
+        storage.pinTracker(with: tracker.id)
+        updateTrackers()
+    }
+
+    func unpinTracker(with indexPath: IndexPath) {
+        let tracker = getTracker(by: indexPath)
+        storage.unpinTracker(with: tracker.id)
+        updateTrackers()
+    }
+
+    func deleteTracker(with indexPath: IndexPath) {
+        let tracker = getTracker(by: indexPath)
+        storage.deleteTracker(with: tracker.id)
+        updateTrackers()
+    }
+    
     func setError(error: String?) {
         self.error = error
     }
     
-    func reset() {
-        newTracker = defaultNewTracker
+    func reset(_ tracker: Tracker? = nil, categoryName: String) {
         week = defaultWeek
+        if let tracker {
+            self.newTracker = NewTracker(from: tracker)
+        } else {
+            newTracker = defaultNewTracker
+        }
+        changeCategory(categoryName: categoryName)
     }
 }

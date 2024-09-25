@@ -47,6 +47,16 @@ final class TrackerViewController: UIViewController {
         //filteredTrackers = trackerManager.filteredTrackers
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        statsManager.sendEvent(.open, screen: .main, item: nil)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        statsManager.sendEvent(.close, screen: .main, item: nil)
+    }
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -110,6 +120,7 @@ final class TrackerViewController: UIViewController {
 // MARK: - TrackerCellDelegate
 
 extension TrackerViewController: TrackerCellDelegate {
+
     func didTapPlusButton(_ cell: TrackerCell) {
         statsManager.sendEvent(.click, screen: .main, item: .tracker)
         guard
@@ -117,6 +128,29 @@ extension TrackerViewController: TrackerCellDelegate {
         else { return }
         let tracker = trackerManager.filteredTrackers[indexPath.section].trackers[indexPath.row]
         trackerManager.updateDaysCounter(id: tracker.id)
+        statsManager.sendEvent(.click, screen: .main, item: .tracker)
+    }
+    
+    func didTapPinAction(_ indexPath: IndexPath) {
+        trackerManager.pinTracker(with: indexPath)
+    }
+
+    func didTapUnpinAction(_ indexPath: IndexPath) {
+        trackerManager.unpinTracker(with: indexPath)
+    }
+
+    func didTapEditAction(_ indexPath: IndexPath) {
+        let tracker = trackerManager.getTracker(by: indexPath)
+        let categoryName = trackerManager.getCategory(by: indexPath).title
+        trackerManager.reset(tracker, categoryName: categoryName)
+        let viewController = TrackerCreationViewController().wrapWithNavigationController()
+        self.present(viewController, animated: true)
+        statsManager.sendEvent(.click, screen: .main, item: .edit)
+    }
+
+    func didTapDeleteAction(_ indexPath: IndexPath) {
+        trackerManager.deleteTracker(with: indexPath)
+        statsManager.sendEvent(.click, screen: .main, item: .delete)
     }
 }
 
@@ -139,10 +173,12 @@ extension TrackerViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerCell.identifier, for: indexPath) as? TrackerCell
         else { return UICollectionViewCell() }
         cell.delegate = self
-        let tracker = trackerManager.filteredTrackers[indexPath.section].trackers[indexPath.row]
+        let trackerCategory = trackerManager.filteredTrackers[indexPath.section]
+        let tracker = trackerCategory.trackers[indexPath.row]
         let count = trackerManager.getTrackerCount(trackerID: tracker.id)
         let isCompleted = trackerManager.isTrackerCompleteForSelectedDay(trackerUUID: tracker.id) >= 0
-        cell.setUpCell(tracker: tracker, count: count, isCompleted: isCompleted)
+        let isPinned = tracker.categoryName == NSLocalizedString("pinned", comment: "")
+        cell.setUpCell(tracker: tracker, count: count, isCompleted: isCompleted, isPinned: isPinned)
         return cell
     }
     
@@ -203,6 +239,22 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
         CGSize(width: collectionWidth, height: 52)
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension TrackerViewController: UICollectionViewDelegate {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        contextMenuConfigurationForItemAt indexPath: IndexPath,
+        point: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerCell.identifier, for: indexPath)
+        guard let trackerCell = cell as? TrackerCell else { return UIContextMenuConfiguration() }
+        let tracker = trackerManager.getTracker(by: indexPath)
+        let isPinned = tracker.categoryName == NSLocalizedString("pinned", comment: "")
+        return trackerCell.configureContextMenu(indexPath, self, isPinned)
     }
 }
 

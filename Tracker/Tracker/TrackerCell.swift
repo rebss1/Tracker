@@ -69,9 +69,15 @@ final class TrackerCell: UICollectionViewCell {
         return view
     }()
     
+    private lazy var pinImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "pin"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
     // MARK: - Public Methods
     
-    func setUpCell(tracker: Tracker, count: Int, isCompleted: Bool) {
+    func setUpCell(tracker: Tracker, count: Int, isCompleted: Bool, isPinned: Bool) {
         cellBackgroundView.backgroundColor = UIColor(named: tracker.color)
         emoji.text = tracker.emoji
         textLabel.text = tracker.name
@@ -82,7 +88,51 @@ final class TrackerCell: UICollectionViewCell {
         plusButton.layer.opacity = isCompleted ? 0.3 : 1
         plusButton.setImage(UIImage(named: isCompleted ? "done" : "plus"),
                             for: .normal)
+        pinImageView.isHidden = !isPinned
         setUp()
+    }
+    
+    // MARK: - Public Methods
+    
+    func configureContextMenu(
+        _ indexPath: IndexPath,
+        _ delegate: TrackerCellDelegate,
+        _ isPinned: Bool
+    ) -> UIContextMenuConfiguration {
+        let context = UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ -> UIMenu? in
+            let pin = self.makeAction(NSLocalizedString("contextActionPin", comment: ""), false) { _ in
+                delegate.didTapPinAction(indexPath)
+            }
+            let unpin = self.makeAction(NSLocalizedString("contextActionUnpin", comment: ""), false) {  _ in
+                delegate.didTapUnpinAction(indexPath)
+            }
+            let edit = self.makeAction(NSLocalizedString("contextActionEdit", comment: ""), false) { _ in
+                delegate.didTapEditAction(indexPath)
+            }
+            let delete = self.makeAction(NSLocalizedString("contextActionDelete", comment: ""), true) { _ in
+                delegate.didTapDeleteAction(indexPath)
+            }
+            return UIMenu(
+                title: "",
+                image: nil,
+                identifier: nil,
+                options: UIMenu.Options.displayInline,
+                children: [isPinned ? unpin : pin, edit, delete]
+            )
+        }
+        return context
+    }
+
+    func makeAction(_ title: String, _ isDestructive: Bool, _ handler: @escaping UIActionHandler) -> UIAction {
+        UIAction(
+            title: title,
+            image: nil,
+            identifier: nil,
+            discoverabilityTitle: nil,
+            attributes: isDestructive ? .destructive : [],
+            state: .off,
+            handler: handler
+        )
     }
 
     // MARK: - Private Methods
@@ -100,7 +150,7 @@ final class TrackerCell: UICollectionViewCell {
         ])
         
         contentView.addSubviews([cellBackgroundView, quantityManagementView])
-        cellBackgroundView.addSubviews([emojiBackground, textLabel])
+        cellBackgroundView.addSubviews([emojiBackground, textLabel, pinImageView])
         emojiBackground.addSubviews([emoji])
         quantityManagementView.addSubviews([quantityLabel, plusButton])
         
@@ -147,6 +197,13 @@ final class TrackerCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             quantityLabel.topAnchor.constraint(equalTo: quantityManagementView.topAnchor, constant: 16),
             quantityLabel.leadingAnchor.constraint(equalTo: quantityManagementView.leadingAnchor, constant: 12)
+        ])
+        
+        NSLayoutConstraint.activate([
+            pinImageView.topAnchor.constraint(equalTo: cellBackgroundView.topAnchor, constant: 12),
+            pinImageView.trailingAnchor.constraint(equalTo: cellBackgroundView.trailingAnchor, constant: -4),
+            pinImageView.widthAnchor.constraint(equalToConstant: 24),
+            pinImageView.heightAnchor.constraint(equalToConstant: 24)
         ])
     }
 }

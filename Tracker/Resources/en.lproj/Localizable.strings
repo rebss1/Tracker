@@ -38,6 +38,11 @@
 "emptyStatsStubViewText" = "There is nothing to analyze yet";
 "completedTrackersStats" = "Trackers completed";
 "createdTrackersStats" = "Trackers created";
+"contextActionPin" = "Pin";
+"contextActionUnpin" = "Unpin";
+"contextActionEdit" = "Edit";
+"contextActionDelete" = "Delete";
+"pinned" = "Pinned";
 
 "monday" = "Monday";
 "tuesday" = "Tuesday";

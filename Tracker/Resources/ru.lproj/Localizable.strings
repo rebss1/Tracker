@@ -38,6 +38,11 @@
 "emptyStatsStubViewText" = "Анализировать пока нечего";
 "completedTrackersStats" = "Трекеров завершено";
 "createdTrackersStats" = "Трекеров создано";
+"contextActionPin" = "Закрепить";
+"contextActionUnpin" = "Открепить";
+"contextActionEdit" = "Редактировать";
+"contextActionDelete" = "Удалить";
+"pinned" = "Закрепленные";
 
 "monday" = "Понедельник";
 "tuesday" = "Вторник";

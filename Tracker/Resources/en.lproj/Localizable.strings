@@ -43,6 +43,12 @@
 "contextActionEdit" = "Edit";
 "contextActionDelete" = "Delete";
 "pinned" = "Pinned";
+"filters" = "Filters";
+"allFilters" = "All trackers";
+"todayFilters" = "Today's trackers";
+"finishedFilters" = "Finished";
+"unfinishedFilters" = "Unfinished";
+
 
 "monday" = "Monday";
 "tuesday" = "Tuesday";

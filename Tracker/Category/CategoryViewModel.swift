@@ -16,6 +16,7 @@ final class CategoryViewModel {
     var selectedCategoryName: Binding<String>?
     
     private let model: CategoryModel
+    private let trackerManager = TrackerManager.shared
     
     init(model: CategoryModel) {
         self.model = model
@@ -25,7 +26,7 @@ final class CategoryViewModel {
         categoriesBinding?(model.categories)
         isEmptyCategoriesBinding?(model.categories.isEmpty)
         selectedCategoryName?(model.getCurrentCategoryName())
-        updateCategories()
+        trackerManager.updateCategories()
     }
     
     func createNewCategory(with categoryName: String) {
@@ -37,18 +38,10 @@ final class CategoryViewModel {
         let categoryName = model.categories[indexPath.row].title
         model.changeCategory(to: categoryName)
         selectedCategoryName?(model.getCurrentCategoryName())
-        updateCategories()
+        trackerManager.updateCategories()
     }
     
     func didDoneButtonTapped() {
-        updateCreation()
-    }
-    
-    private func updateCreation() {
-        NotificationCenter.default.post(name: TrackerCreationViewController.reloadCollection, object: self)
-    }
-
-    private func updateCategories() {
-        NotificationCenter.default.post(name: CategoryViewController.reloadCollection, object: self)
+        trackerManager.updateCreation()
     }
 }

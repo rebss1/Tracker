@@ -11,6 +11,8 @@ import UIKit
 final class TrackerViewController: UIViewController {
 
     static let reloadCollection = Notification.Name(rawValue: "reloadTrackerCollection")
+    static let resetDatePicker = Notification.Name(rawValue: "resetDatePicker")
+    
     private var observer: NSObjectProtocol?
     private let trackerManager = TrackerManager.shared
     private let statsManager = StatisticsManager.shared
@@ -36,6 +38,14 @@ final class TrackerViewController: UIViewController {
         collectionView.dataSource = self
         return collectionView
     }()
+    
+    private lazy var filterButton = Button(title: NSLocalizedString("filters", comment: ""),
+                                           style: .normal,
+                                           color: .ypBlue
+    ) {
+        let viewController = FilterViewController().wrapWithNavigationController()
+        self.present(viewController, animated: true)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,13 +83,20 @@ final class TrackerViewController: UIViewController {
     
     private func setUpViews() {
         view.backgroundColor = .ypWhite
-        view.addSubviews([collectionView])
+        view.addSubviews([collectionView, filterButton])
+        
+        filterButton.isHidden = trackerManager.filteredTrackers.count == 0
         
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
+            filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            filterButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            filterButton.heightAnchor.constraint(equalToConstant: 50),
+            filterButton.widthAnchor.constraint(equalToConstant: 114)
         ])
     }
     
@@ -104,6 +121,14 @@ final class TrackerViewController: UIViewController {
                              action: #selector(datePickerValueChanged(_:)),
                              for: .valueChanged)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
+        
+        observer = NotificationCenter.default.addObserver(
+            forName: TrackerViewController.resetDatePicker,
+            object: nil,
+            queue: .main
+        ) { _ in
+            datePicker.setDate(Date(), animated: true)
+        }
     }
     
     @objc private func addTracker() {

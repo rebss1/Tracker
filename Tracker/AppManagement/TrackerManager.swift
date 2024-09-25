@@ -17,6 +17,8 @@ final class TrackerManager {
     private(set) var week: [DayOfWeekSwitch]
     private(set) var error: String?
     private(set) var newTracker: NewTracker
+    private(set) var filters: [Filter] = Filter.allCases
+    private(set) var filter: Filter = Filter.all
     private let defaultWeek = DayOfWeek.allCases.map { DayOfWeekSwitch(dayOfWeek: $0, isEnabled: false) }
     private let defaultNewTracker = NewTracker(frequency: .regular, name: "", color: "", emoji: "", schedule: "", categoryName: "", createdAt: Date())
     
@@ -57,15 +59,26 @@ final class TrackerManager {
     var filteredTrackers: [TrackerCategory] {
         let categories = trackers.map {
             TrackerCategory(title: $0.title,
-                            trackers: $0.trackers.filter {
-                
-                if $0.schedule.isEmpty {
-                    return true
-                }
-                let schedule = DayOfWeek.stringToSchedule(scheduleString: $0.schedule).map { String(describing: $0.dayOfWeek)}
-                let selectedDayOfWeek = selectedDay.dateToString()
-                return schedule.contains(selectedDayOfWeek)
-            })
+                            trackers: $0.trackers
+                .filter {
+                    if $0.schedule.isEmpty {
+                        return true
+                    }
+                    let schedule = DayOfWeek.stringToSchedule(scheduleString: $0.schedule).map { String(describing: $0.dayOfWeek)}
+                    let selectedDayOfWeek = selectedDay.dateToString()
+                    return schedule.contains(selectedDayOfWeek)
+                }.filter {
+                    switch filter {
+                    case .all:
+                        return true
+                    case .today:
+                        return true
+                    case .finished:
+                        return (isTrackerCompleteForSelectedDay(trackerUUID: $0.id) != 0)
+                    case .unfinished:
+                        return (isTrackerCompleteForSelectedDay(trackerUUID: $0.id) == 0)
+                    }
+                })
         } .filter { !$0.trackers.isEmpty }
         return categories
     }
@@ -95,6 +108,18 @@ final class TrackerManager {
     
     func updateCreation() {
         NotificationCenter.default.post(name: TrackerCreationViewController.reloadCollection, object: self)
+    }
+    
+    func resetDatePicker() {
+        NotificationCenter.default.post(name: TrackerViewController.resetDatePicker, object: self)
+    }
+    
+    func updateCategories() {
+        NotificationCenter.default.post(name: CategoryViewController.reloadCollection, object: self)
+    }
+    
+    func updateFilters() {
+        NotificationCenter.default.post(name: FilterViewController.reloadCollection, object: self)
     }
     
     func createTracker(category: String) {
@@ -189,5 +214,16 @@ final class TrackerManager {
             newTracker = defaultNewTracker
         }
         changeCategory(categoryName: categoryName)
+    }
+    
+    func addFilter(indexPath: IndexPath) {
+        filter = filters[indexPath.row]
+        if filter == .today {
+            resetDatePicker()
+            changeSelectedDay(selectedDay: Date())
+        } else {
+            updateTrackers()
+        }
+        updateFilters()
     }
 }

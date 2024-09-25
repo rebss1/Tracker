@@ -43,6 +43,11 @@
 "contextActionEdit" = "Редактировать";
 "contextActionDelete" = "Удалить";
 "pinned" = "Закрепленные";
+"filters" = "Фильтры";
+"allFilters" = "Все трекеры";
+"todayFilters" = "Трекеры на сегодня ";
+"finishedFilters" = "Завершенные";
+"unfinishedFilters" = "Не завершенные";
 
 "monday" = "Понедельник";
 "tuesday" = "Вторник";

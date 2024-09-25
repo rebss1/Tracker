@@ -22,6 +22,9 @@
 		941BCA972CA4194C003A1358 /* StatisticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941BCA962CA4193B003A1358 /* StatisticsManager.swift */; };
 		941BCAB62CA4526F003A1358 /* InlineSnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 941BCAB52CA4526F003A1358 /* InlineSnapshotTesting */; };
 		941BCAB82CA4526F003A1358 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 941BCAB72CA4526F003A1358 /* SnapshotTesting */; };
+		941BCAC32CA48FD2003A1358 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941BCAC22CA48FC4003A1358 /* FilterViewController.swift */; };
+		941BCAC52CA48FED003A1358 /* FilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941BCAC42CA48FD6003A1358 /* FilterCell.swift */; };
+		941BCAC72CA490D7003A1358 /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941BCAC62CA490D3003A1358 /* Filter.swift */; };
 		942A5F562C2DC50F00A53D61 /* StubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 942A5F552C2DC50F00A53D61 /* StubView.swift */; };
 		942A5FA22C2EB15700A53D61 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 942A5FA12C2EB15700A53D61 /* Tracker.swift */; };
 		942A5FA42C2EB16700A53D61 /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 942A5FA32C2EB16700A53D61 /* TrackerCategory.swift */; };
@@ -97,6 +100,9 @@
 		941BCA922CA40CB1003A1358 /* StatsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsCell.swift; sourceTree = "<group>"; };
 		941BCA962CA4193B003A1358 /* StatisticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsManager.swift; sourceTree = "<group>"; };
 		941BCAAB2CA45207003A1358 /* TrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		941BCAC22CA48FC4003A1358 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
+		941BCAC42CA48FD6003A1358 /* FilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCell.swift; sourceTree = "<group>"; };
+		941BCAC62CA490D3003A1358 /* Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
 		942A5F552C2DC50F00A53D61 /* StubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubView.swift; sourceTree = "<group>"; };
 		942A5FA12C2EB15700A53D61 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		942A5FA32C2EB16700A53D61 /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
@@ -213,6 +219,7 @@
 		9403CB932C1B28F700C1ED23 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				941BCAC12CA48FB0003A1358 /* Filter */,
 				94BD7C822C7768E600FDA2A0 /* AppManagement */,
 				94BD7CA92C776C3700FDA2A0 /* StartViewControllers */,
 				942A5FA02C2EB13E00A53D61 /* Models */,
@@ -241,6 +248,16 @@
 				946445F02C38451300B117A6 /* UIView+addTapGesture.swift */,
 			);
 			path = Extentions;
+			sourceTree = "<group>";
+		};
+		941BCAC12CA48FB0003A1358 /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				941BCAC22CA48FC4003A1358 /* FilterViewController.swift */,
+				941BCAC42CA48FD6003A1358 /* FilterCell.swift */,
+				941BCAC62CA490D3003A1358 /* Filter.swift */,
+			);
+			path = Filter;
 			sourceTree = "<group>";
 		};
 		942A5FA02C2EB13E00A53D61 /* Models */ = {
@@ -557,9 +574,11 @@
 				9403CBC22C2DB19200C1ED23 /* StatsViewController.swift in Sources */,
 				9403CBB82C1CB00800C1ED23 /* UIview+edgesToSuperview.swift in Sources */,
 				946445EB2C38351200B117A6 /* CollectionFooterDelegate.swift in Sources */,
+				941BCAC72CA490D7003A1358 /* Filter.swift in Sources */,
 				946445DC2C382D3800B117A6 /* Button.swift in Sources */,
 				946445E42C38344500B117A6 /* CollectionHeader.swift in Sources */,
 				9403CB952C1B28F700C1ED23 /* AppDelegate.swift in Sources */,
+				941BCAC52CA48FED003A1358 /* FilterCell.swift in Sources */,
 				946445F92C387BE700B117A6 /* NewTracker.swift in Sources */,
 				942A5FA42C2EB16700A53D61 /* TrackerCategory.swift in Sources */,
 				942A5FA22C2EB15700A53D61 /* Tracker.swift in Sources */,
@@ -584,6 +603,7 @@
 				946445E82C38347000B117A6 /* CollectionFooter.swift in Sources */,
 				9403CB972C1B28F700C1ED23 /* SceneDelegate.swift in Sources */,
 				942A5FAA2C2F147B00A53D61 /* TrackerCellDelegate.swift in Sources */,
+				941BCAC32CA48FD2003A1358 /* FilterViewController.swift in Sources */,
 				942B7C192C58EBB300491A47 /* Date+dateToString.swift in Sources */,
 				94E067512C8B65DF00E94868 /* CategoryViewController.swift in Sources */,
 				94BD7C852C77693300FDA2A0 /* Storage.swift in Sources */,

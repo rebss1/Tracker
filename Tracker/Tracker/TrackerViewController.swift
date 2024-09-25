@@ -13,11 +13,13 @@ final class TrackerViewController: UIViewController {
     static let reloadCollection = Notification.Name(rawValue: "reloadTrackerCollection")
     private var observer: NSObjectProtocol?
     private let trackerManager = TrackerManager.shared
+    private let statsManager = StatisticsManager.shared
+    //private var filteredTrackers: [TrackerCategory]?
     
     private let stubView = StubView(emoji: "dizzy",
                                     text: NSLocalizedString("emptyTrackersStubViewText", comment: ""))
     private lazy var collectionWidth = collectionView.frame.width
-    private lazy var searchBar = UISearchBar(frame: .zero)
+    //private lazy var searchBar = UISearchBar(frame: .zero)
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -41,6 +43,8 @@ final class TrackerViewController: UIViewController {
         setUpDatePicker()
         setUpViews()
         addObserver()
+        
+        //filteredTrackers = trackerManager.filteredTrackers
     }
     
     deinit {
@@ -93,6 +97,7 @@ final class TrackerViewController: UIViewController {
     }
     
     @objc private func addTracker() {
+        statsManager.sendEvent(.open, screen: .creation, item: .addTracker)
         present(TypeOfTrackerViewController().wrapWithNavigationController(), animated: true)
     }
     
@@ -106,6 +111,7 @@ final class TrackerViewController: UIViewController {
 
 extension TrackerViewController: TrackerCellDelegate {
     func didTapPlusButton(_ cell: TrackerCell) {
+        statsManager.sendEvent(.click, screen: .main, item: .tracker)
         guard
             let indexPath = collectionView.indexPath(for: cell)
         else { return }
@@ -199,3 +205,21 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
         CGSize(width: collectionWidth, height: 52)
     }
 }
+
+//extension TrackerViewController: UISearchResultsUpdating {
+//    
+//    func updateSearchResults(for searchController: UISearchController) {
+//        if let searchText = searchController.searchBar.text, !searchText.isEmpty {
+//            for trackerCategory in trackerManager.filteredTrackers {
+//                for tracker in trackerCategory.trackers {
+//                    if tracker.name.lowercased().contains(searchText.lowercased()) {
+//                        filteredTrackers?.append(TrackerCategory(title: trackerCategory.title, trackers: [tracker]))
+//                    }
+//                }
+//            }
+//        } else {
+//            filteredTrackers = trackerManager.filteredTrackers
+//        }
+//        collectionView.reloadData()
+//    }
+//}

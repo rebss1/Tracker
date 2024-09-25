@@ -121,6 +121,14 @@ final class TrackerManager {
         storage.getRecords(of: trackerID).count
     }
     
+    func getAllTrackersCount() -> Int {
+        storage.getAllTrackers().count
+    }
+    
+    func getAllRecordsCount() -> Int {
+        storage.getAllRecords().count
+    }
+    
     func setError(error: String?) {
         self.error = error
     }

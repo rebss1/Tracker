@@ -36,6 +36,8 @@
 "categoryColor" = "Color";
 "statsTitle" = "Statistics";
 "emptyStatsStubViewText" = "There is nothing to analyze yet";
+"completedTrackersStats" = "Trackers completed";
+"createdTrackersStats" = "Trackers created";
 
 "monday" = "Monday";
 "tuesday" = "Tuesday";

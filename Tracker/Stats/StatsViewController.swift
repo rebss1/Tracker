@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-final class StatsViewController: UIViewController {
+final class StatsViewController: UIViewController, UITableViewDelegate {
     
     // MARK: - Constants
 
@@ -31,7 +31,8 @@ final class StatsViewController: UIViewController {
         tableView.showsVerticalScrollIndicator = false
         tableView.contentInset = UIEdgeInsets(top: 24, left: 0, bottom: 24, right: 0)
         tableView.separatorStyle = .none
-        tableView.backgroundColor = .ypWhite
+        tableView.backgroundColor = .clear
+        tableView.backgroundView = stubView
         return tableView
     }()
     
@@ -39,6 +40,10 @@ final class StatsViewController: UIViewController {
         super.viewDidLoad()
         setupNavBar()
         setUp()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
     }
     
     // MARK: - Private Methods
@@ -61,17 +66,32 @@ final class StatsViewController: UIViewController {
     }
 }
 
-extension StatsViewController: UITableViewDelegate {
-    
-}
-
 extension StatsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        statsTable.backgroundView = stubView
-        return 1
+        let trackersCount = trackerManager.getAllTrackersCount()
+        if trackersCount > 0 {
+            stubView.isHidden = true
+            return 2
+        } else {
+            stubView.isHidden = false
+            return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: StatsCell.identifier, for: indexPath) as? StatsCell else { return UITableViewCell() }
+        switch indexPath.row {
+        case 0:
+            let trackersCount = trackerManager.getAllTrackersCount()
+            cell.setUpCell(with: trackersCount, message: NSLocalizedString("createdTrackersStats", comment: ""))
+        case 1:
+            let doneTrackersCount = trackerManager.getAllRecordsCount()
+            cell.setUpCell(with: doneTrackersCount, message: NSLocalizedString("completedTrackersStats", comment: ""))
+        default:
+            cell.setUpCell(with: 0, message: "")
+        }
+        return cell
     }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat { 102 }
 }

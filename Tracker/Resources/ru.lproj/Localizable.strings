@@ -36,6 +36,8 @@
 "categoryColor" = "Цвет";
 "statsTitle" = "Cтатистика";
 "emptyStatsStubViewText" = "Анализировать пока нечего";
+"completedTrackersStats" = "Трекеров завершено";
+"createdTrackersStats" = "Трекеров создано";
 
 "monday" = "Понедельник";
 "tuesday" = "Вторник";

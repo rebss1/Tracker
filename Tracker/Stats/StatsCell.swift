@@ -57,31 +57,36 @@ final class StatsCell: UITableViewCell {
         return label
     }()
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        gradient.frame = self.bounds
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0))
+    }
+    
     // MARK: - Private Methods
     
     private func setupGradientView() {
         gradient.colors = gradientColors
         gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
         gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
-        layer.addSublayer(gradient)
-        layer.cornerRadius = 16
-        layer.masksToBounds = true
+        contentView.layer.addSublayer(gradient)
+        contentView.layer.cornerRadius = 16
+        contentView.layer.masksToBounds = true
     }
     
     private func setUp() {
-        setupGradientView()
-        
         containerStack.addArrangedSubview(titleLabel)
         containerStack.addArrangedSubview(subTitleLabel)
         cellBackgroundView.addSubviews([containerStack])
         contentView.addSubviews([cellBackgroundView])
+        contentView.backgroundColor = .clear
         backgroundColor = .clear
         
         NSLayoutConstraint.activate([
-            cellBackgroundView.topAnchor.constraint(equalTo: topAnchor, constant: 1),
+            cellBackgroundView.topAnchor.constraint(equalTo: topAnchor, constant: 7),
             cellBackgroundView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 1),
             cellBackgroundView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -1),
-            cellBackgroundView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1),
+            cellBackgroundView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -7),
             
             containerStack.leadingAnchor.constraint(equalTo: cellBackgroundView.leadingAnchor, constant: 11),
             containerStack.trailingAnchor.constraint(equalTo: cellBackgroundView.trailingAnchor, constant: -11),
@@ -93,7 +98,7 @@ final class StatsCell: UITableViewCell {
     // MARK: - Public Methods
 
     func setUpCell(with count: Int, message: String) {
-        contentView.layer.cornerRadius = 16
+        setupGradientView()
         setUp()
         titleLabel.text = "\(count)"
         subTitleLabel.text = message

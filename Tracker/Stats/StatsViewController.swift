@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-final class StatsViewController: UIViewController, UITableViewDelegate {
+final class StatsViewController: UIViewController {
     
     // MARK: - Constants
 
@@ -66,6 +66,11 @@ final class StatsViewController: UIViewController, UITableViewDelegate {
     }
 }
 
+extension StatsViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool { false }
+}
+
 extension StatsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let trackersCount = trackerManager.getAllTrackersCount()
@@ -92,6 +97,6 @@ extension StatsViewController: UITableViewDataSource {
         }
         return cell
     }
-    
+    // Высота ячейки выбрана специально больше, чем должна быть по макету, потому что присутствует рамка вокруг толщиной 6, с помощью этого реализовано расстояние между ячейками в 12. Таким образом мы соблюдаем полное соответсвие макету. Пришлось так сделать, потому что у tableView нет метода для выбора расстояния между ячейками.
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat { 102 }
 }

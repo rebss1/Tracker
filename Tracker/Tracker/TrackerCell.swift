@@ -92,25 +92,23 @@ final class TrackerCell: UICollectionViewCell {
         setUp()
     }
     
-    // MARK: - Public Methods
-    
     func configureContextMenu(
         _ indexPath: IndexPath,
         _ delegate: TrackerCellDelegate,
         _ isPinned: Bool
     ) -> UIContextMenuConfiguration {
-        let context = UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ -> UIMenu? in
+        let context = UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { [weak delegate] _ -> UIMenu? in
             let pin = self.makeAction(NSLocalizedString("contextActionPin", comment: ""), false) { _ in
-                delegate.didTapPinAction(indexPath)
+                delegate?.didTapPinAction(indexPath)
             }
             let unpin = self.makeAction(NSLocalizedString("contextActionUnpin", comment: ""), false) {  _ in
-                delegate.didTapUnpinAction(indexPath)
+                delegate?.didTapUnpinAction(indexPath)
             }
             let edit = self.makeAction(NSLocalizedString("contextActionEdit", comment: ""), false) { _ in
-                delegate.didTapEditAction(indexPath)
+                delegate?.didTapEditAction(indexPath)
             }
             let delete = self.makeAction(NSLocalizedString("contextActionDelete", comment: ""), true) { _ in
-                delegate.didTapDeleteAction(indexPath)
+                delegate?.didTapDeleteAction(indexPath)
             }
             return UIMenu(
                 title: "",
@@ -134,6 +132,10 @@ final class TrackerCell: UICollectionViewCell {
             handler: handler
         )
     }
+    
+    func getBackgroundView() -> UIView {
+        return backgroundView ?? UIView()
+    }
 
     // MARK: - Private Methods
 
@@ -142,6 +144,7 @@ final class TrackerCell: UICollectionViewCell {
     }
     
     private func setUp() {
+        self.layer.cornerRadius = 16
         NSLayoutConstraint.activate([
             contentView.topAnchor.constraint(equalTo: topAnchor),
             contentView.bottomAnchor.constraint(equalTo: bottomAnchor),

@@ -45,6 +45,7 @@ final class TrackerViewController: UIViewController {
     ) {
         let viewController = FilterViewController().wrapWithNavigationController()
         self.present(viewController, animated: true)
+        self.statsManager.sendEvent(.click, screen: .main, item: .filter)
     }
     
     override func viewDidLoad() {
@@ -115,9 +116,14 @@ final class TrackerViewController: UIViewController {
     private func setUpDatePicker() {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
+        datePicker.backgroundColor = .datePickerBackground
         datePicker.preferredDatePickerStyle = .compact
         datePicker.maximumDate = Date()
-        datePicker.addTarget(self, 
+        datePicker.layer.masksToBounds = true
+        datePicker.layer.cornerRadius = 8
+        datePicker.overrideUserInterfaceStyle = .light
+        datePicker.setValue(UIColor.datePickerText, forKey: "textColor")
+        datePicker.addTarget(self,
                              action: #selector(datePickerValueChanged(_:)),
                              for: .valueChanged)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
@@ -132,7 +138,7 @@ final class TrackerViewController: UIViewController {
     }
     
     @objc private func addTracker() {
-        statsManager.sendEvent(.open, screen: .creation, item: .addTracker)
+        statsManager.sendEvent(.click, screen: .creation, item: .addTrack)
         present(TypeOfTrackerViewController().wrapWithNavigationController(), animated: true)
     }
     
@@ -147,13 +153,12 @@ final class TrackerViewController: UIViewController {
 extension TrackerViewController: TrackerCellDelegate {
 
     func didTapPlusButton(_ cell: TrackerCell) {
-        statsManager.sendEvent(.click, screen: .main, item: .tracker)
         guard
             let indexPath = collectionView.indexPath(for: cell)
         else { return }
         let tracker = trackerManager.filteredTrackers[indexPath.section].trackers[indexPath.row]
         trackerManager.updateDaysCounter(id: tracker.id)
-        statsManager.sendEvent(.click, screen: .main, item: .tracker)
+        statsManager.sendEvent(.click, screen: .main, item: .track)
     }
     
     func didTapPinAction(_ indexPath: IndexPath) {
@@ -167,6 +172,7 @@ extension TrackerViewController: TrackerCellDelegate {
     func didTapEditAction(_ indexPath: IndexPath) {
         let tracker = trackerManager.getTracker(by: indexPath)
         let categoryName = trackerManager.getCategory(by: indexPath).title
+        trackerManager.deleteTracker(with: indexPath)
         trackerManager.reset(tracker, categoryName: categoryName)
         let viewController = TrackerCreationViewController().wrapWithNavigationController()
         self.present(viewController, animated: true)
@@ -201,7 +207,7 @@ extension TrackerViewController: UICollectionViewDataSource {
         let trackerCategory = trackerManager.filteredTrackers[indexPath.section]
         let tracker = trackerCategory.trackers[indexPath.row]
         let count = trackerManager.getTrackerCount(trackerID: tracker.id)
-        let isCompleted = trackerManager.isTrackerCompleteForSelectedDay(trackerUUID: tracker.id) >= 0
+        let isCompleted = trackerManager.isTrackerCompleteForSelectedDay(trackerUUID: tracker.id) 
         let isPinned = tracker.categoryName == NSLocalizedString("pinned", comment: "")
         cell.setUpCell(tracker: tracker, count: count, isCompleted: isCompleted, isPinned: isPinned)
         return cell
@@ -275,12 +281,40 @@ extension TrackerViewController: UICollectionViewDelegate {
         contextMenuConfigurationForItemAt indexPath: IndexPath,
         point: CGPoint
     ) -> UIContextMenuConfiguration? {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerCell.identifier, for: indexPath)
+        let cell = collectionView.cellForItem(at: indexPath)
         guard let trackerCell = cell as? TrackerCell else { return UIContextMenuConfiguration() }
         let tracker = trackerManager.getTracker(by: indexPath)
         let isPinned = tracker.categoryName == NSLocalizedString("pinned", comment: "")
         return trackerCell.configureContextMenu(indexPath, self, isPinned)
     }
+    
+//    func collectionView(
+//        _ collectionView: UICollectionView,
+//        previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+//    ) -> UITargetedPreview? {
+//        guard let indexPath = configuration.identifier as? IndexPath,
+//              let cell = collectionView.cellForItem(at: indexPath) as? TrackerCell
+//        else {
+//            return UITargetedPreview(view: UIView()) // Возвращаем пустой предпросмотр, если ячейка не найдена
+//        }
+//        
+//        let view = cell.getBackgroundView()
+//        
+//        // Проверка, что представление добавлено в окно
+//        if let window = view.window {
+//            return UITargetedPreview(view: view)
+//        } else {
+//            // Получаем центр ячейки относительно коллекции
+//            let cellCenter = collectionView.convert(cell.center, to: collectionView.superview)
+//
+//            // Создаем корректный UIPreviewTarget
+//            let previewTarget = UIPreviewTarget(container: collectionView, center: cellCenter)
+//            let parameters = UIPreviewParameters()
+//            
+//            // Возвращаем UITargetedPreview с корректной конфигурацией
+//            return UITargetedPreview(view: view, parameters: parameters, target: previewTarget)
+//        }
+//    }
 }
 
 //extension TrackerViewController: UISearchResultsUpdating {

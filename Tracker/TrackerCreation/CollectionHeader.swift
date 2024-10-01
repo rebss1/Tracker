@@ -136,10 +136,10 @@ final class CollectionHeader: UICollectionViewCell {
 // MARK: - UITextFieldDelegate
 
 extension CollectionHeader: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
         self.trackerManager.changeName(name: textField.text)
         textField.endEditing(true)
-        return false
     }
 
     func textField(

@@ -16,8 +16,8 @@ enum Screen: String {
 }
 
 enum Action: String {
-    case addTracker = "add_tracker"
-    case tracker = "tracker"
+    case addTrack = "add_track"
+    case track = "track"
     case filter = "filter"
     case edit = "edit"
     case delete = "delete"

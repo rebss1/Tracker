@@ -74,9 +74,9 @@ final class TrackerManager {
                     case .today:
                         return true
                     case .finished:
-                        return (isTrackerCompleteForSelectedDay(trackerUUID: $0.id) != 0)
+                        return isTrackerCompleteForSelectedDay(trackerUUID: $0.id)
                     case .unfinished:
-                        return (isTrackerCompleteForSelectedDay(trackerUUID: $0.id) == 0)
+                        return !isTrackerCompleteForSelectedDay(trackerUUID: $0.id)
                     }
                 })
         } .filter { !$0.trackers.isEmpty }
@@ -95,9 +95,9 @@ final class TrackerManager {
         updateTrackers()
     }
     
-    func isTrackerCompleteForSelectedDay(trackerUUID: UUID) -> Int {
+    func isTrackerCompleteForSelectedDay(trackerUUID: UUID) -> Bool {
         let records = storage.getRecords(of: trackerUUID)
-        return records.firstIndex(where: { Calendar.current.isDate($0.date, equalTo: selectedDay, toGranularity: .day) }) ?? -1
+        return records.first { Calendar.current.isDate($0.date, equalTo: selectedDay, toGranularity: .day) } != nil
     }
     
     // MARK: - Creation methods

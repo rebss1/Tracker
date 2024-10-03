@@ -16,12 +16,10 @@ final class TrackerViewController: UIViewController {
     private var observer: NSObjectProtocol?
     private let trackerManager = TrackerManager.shared
     private let statsManager = StatisticsManager.shared
-    //private var filteredTrackers: [TrackerCategory]?
     
     private let stubView = StubView(emoji: "dizzy",
                                     text: NSLocalizedString("emptyTrackersStubViewText", comment: ""))
     private lazy var collectionWidth = collectionView.frame.width
-    //private lazy var searchBar = UISearchBar(frame: .zero)
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -54,8 +52,6 @@ final class TrackerViewController: UIViewController {
         setUpDatePicker()
         setUpViews()
         addObserver()
-        
-        //filteredTrackers = trackerManager.filteredTrackers
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -83,7 +79,6 @@ final class TrackerViewController: UIViewController {
     }
     
     private func setUpViews() {
-        view.backgroundColor = .ypWhite
         view.addSubviews([collectionView, filterButton])
         
         filterButton.isHidden = trackerManager.filteredTrackers.count == 0
@@ -137,6 +132,25 @@ final class TrackerViewController: UIViewController {
         }
     }
     
+    private func confirmTrackerDelete(at indexPath: IndexPath) {
+        let alertView = UIAlertController(
+            title: nil,
+            message: NSLocalizedString("confirmDeleteTracker", comment: ""),
+            preferredStyle: .actionSheet
+        )
+        alertView.addAction(UIAlertAction(title: NSLocalizedString("confirmDeleteTrackerNoButton", comment: ""),
+                                          style: .cancel))
+        alertView.addAction(
+            UIAlertAction(
+                title: NSLocalizedString("confirmDeleteTrackerYesButton", comment: ""),
+                style: .destructive
+            ) { [weak self] _ in
+                self?.trackerManager.deleteTracker(with: indexPath)
+            }
+        )
+        present(alertView, animated: true)
+    }
+    
     @objc private func addTracker() {
         statsManager.sendEvent(.click, screen: .creation, item: .addTrack)
         present(TypeOfTrackerViewController().wrapWithNavigationController(), animated: true)
@@ -180,7 +194,7 @@ extension TrackerViewController: TrackerCellDelegate {
     }
 
     func didTapDeleteAction(_ indexPath: IndexPath) {
-        trackerManager.deleteTracker(with: indexPath)
+        confirmTrackerDelete(at: indexPath)
         statsManager.sendEvent(.click, screen: .main, item: .delete)
     }
 }
@@ -287,50 +301,4 @@ extension TrackerViewController: UICollectionViewDelegate {
         let isPinned = tracker.categoryName == NSLocalizedString("pinned", comment: "")
         return trackerCell.configureContextMenu(indexPath, self, isPinned)
     }
-    
-//    func collectionView(
-//        _ collectionView: UICollectionView,
-//        previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
-//    ) -> UITargetedPreview? {
-//        guard let indexPath = configuration.identifier as? IndexPath,
-//              let cell = collectionView.cellForItem(at: indexPath) as? TrackerCell
-//        else {
-//            return UITargetedPreview(view: UIView()) // Возвращаем пустой предпросмотр, если ячейка не найдена
-//        }
-//        
-//        let view = cell.getBackgroundView()
-//        
-//        // Проверка, что представление добавлено в окно
-//        if let window = view.window {
-//            return UITargetedPreview(view: view)
-//        } else {
-//            // Получаем центр ячейки относительно коллекции
-//            let cellCenter = collectionView.convert(cell.center, to: collectionView.superview)
-//
-//            // Создаем корректный UIPreviewTarget
-//            let previewTarget = UIPreviewTarget(container: collectionView, center: cellCenter)
-//            let parameters = UIPreviewParameters()
-//            
-//            // Возвращаем UITargetedPreview с корректной конфигурацией
-//            return UITargetedPreview(view: view, parameters: parameters, target: previewTarget)
-//        }
-//    }
 }
-
-//extension TrackerViewController: UISearchResultsUpdating {
-//    
-//    func updateSearchResults(for searchController: UISearchController) {
-//        if let searchText = searchController.searchBar.text, !searchText.isEmpty {
-//            for trackerCategory in trackerManager.filteredTrackers {
-//                for tracker in trackerCategory.trackers {
-//                    if tracker.name.lowercased().contains(searchText.lowercased()) {
-//                        filteredTrackers?.append(TrackerCategory(title: trackerCategory.title, trackers: [tracker]))
-//                    }
-//                }
-//            }
-//        } else {
-//            filteredTrackers = trackerManager.filteredTrackers
-//        }
-//        collectionView.reloadData()
-//    }
-//}

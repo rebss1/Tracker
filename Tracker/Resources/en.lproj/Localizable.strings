@@ -48,7 +48,9 @@
 "todayFilters" = "Today's trackers";
 "finishedFilters" = "Finished";
 "unfinishedFilters" = "Unfinished";
-
+"confirmDeleteTracker" = "Are you sure you want to delete the tracker?";
+"confirmDeleteTrackerYesButton" = "Delete";
+"confirmDeleteTrackerNoButton" = "Cancel";
 
 "monday" = "Monday";
 "tuesday" = "Tuesday";

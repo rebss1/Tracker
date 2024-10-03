@@ -256,6 +256,7 @@ extension TrackerCreationViewController: UICollectionViewDelegateFlowLayout {
 
 extension TrackerCreationViewController: CollectionFooterDelegate {
     func didTapCreateButton() {
+        self.view.endEditing(true)
         trackerManager.createTracker(category: trackerManager.newTracker.categoryName)
         self.presentingViewController?.dismiss(animated: true)
         self.presentingViewController?.presentingViewController?.dismiss(animated: true)

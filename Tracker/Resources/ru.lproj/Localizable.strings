@@ -48,6 +48,9 @@
 "todayFilters" = "Трекеры на сегодня ";
 "finishedFilters" = "Завершенные";
 "unfinishedFilters" = "Не завершенные";
+"confirmDeleteTracker" = "Уверены что хотите удалить трекер?";
+"confirmDeleteTrackerYesButton" = "Удалить";
+"confirmDeleteTrackerNoButton" = "Отменить";
 
 "monday" = "Понедельник";
 "tuesday" = "Вторник";

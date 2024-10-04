@@ -42,7 +42,7 @@ final class CollectionFooter: UICollectionViewCell {
     }()
     
     private lazy var cancelButton = Button(
-        title: "Cancel",
+        title: NSLocalizedString("cancelButtonTitle", comment: ""),
         style: .flat,
         color: .ypRed
     ) {
@@ -50,7 +50,7 @@ final class CollectionFooter: UICollectionViewCell {
     }
     
     private lazy var createButton = Button(
-        title: "Create",
+        title: NSLocalizedString("creationButtonTitle", comment: ""),
         style: .normal,
         color: .ypBlack
     ) {

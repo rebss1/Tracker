@@ -42,7 +42,7 @@ final class PageViewController: UIViewController {
     }()
     
     private lazy var doneButton = Button(
-        title: "This is technology!",
+        title: NSLocalizedString("onboardingButtonTitle", comment: ""),
         style: .normal,
         color: .ypBlack
     ) {

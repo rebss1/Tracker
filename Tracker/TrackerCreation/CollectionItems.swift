@@ -14,7 +14,7 @@ struct Item {
 
 let collectionItems = [
     Item(title: "", data: [""]),
-    Item(title: "Emoji", data: Constants.emojiList),
-    Item(title: "Color", data: Constants.colorList),
+    Item(title: NSLocalizedString("categoryEmoji", comment: ""), data: Constants.emojiList),
+    Item(title: NSLocalizedString("categoryColor", comment: ""), data: Constants.colorList),
     Item(title: "", data: [""])
 ]

@@ -22,10 +22,10 @@ final class CategoryViewController: UIViewController {
     private var selectedCategoryName: String?
     
     private let stubView = StubView(emoji: "dizzy",
-                                    text: "Habits and events can be combined by meaning")
+                                    text: NSLocalizedString("emptyCategoriesStubViewText", comment: ""))
     
     private lazy var createNewCategoryButton = Button(
-        title: "Create new category",
+        title: NSLocalizedString("categoryCreationButton", comment: ""),
         style: .normal,
         color: .ypBlack
     ) {
@@ -35,7 +35,7 @@ final class CategoryViewController: UIViewController {
     }
     
     private lazy var doneButton = Button(
-        title: "Done",
+        title: NSLocalizedString("doneButtonTitle", comment: ""),
         style: .normal,
         color: .ypBlack
     ) {
@@ -106,7 +106,7 @@ final class CategoryViewController: UIViewController {
     }
     
     private func setUp() {
-        navigationItem.title = "Categories"
+        navigationItem.title = NSLocalizedString("categoriesTitle", comment: "")
         view.backgroundColor = .ypWhite
         view.addSubviews([categoryTable, doneButton, createNewCategoryButton])
         

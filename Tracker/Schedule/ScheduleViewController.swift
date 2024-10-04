@@ -24,7 +24,7 @@ final class ScheduleViewController: UIViewController {
     }()
     
     private lazy var doneButton = Button(
-        title: "Done",
+        title: NSLocalizedString("doneButtonTitle", comment: ""),
         style: .normal,
         color: .ypBlack
     ) {
@@ -42,7 +42,7 @@ final class ScheduleViewController: UIViewController {
     }
     
     private func setUp() {
-        navigationItem.title = "Schedule"
+        navigationItem.title = NSLocalizedString("scheduleTitle", comment: "")
         view.backgroundColor = .ypWhite
         view.addSubviews([scheduleTable, doneButton])
         

@@ -19,10 +19,10 @@ final class TabBarViewController: UITabBarController {
         let trackerViewController = TrackerViewController().wrapWithNavigationController()
         let statsViewController = StatsViewController().wrapWithNavigationController()
         
-        trackerViewController.tabBarItem = UITabBarItem(title: "Trackers",
-                                                        image: UIImage(systemName: "record.circle.fill"), 
+        trackerViewController.tabBarItem = UITabBarItem(title: NSLocalizedString("trackersTabTitle", comment: ""),
+                                                        image: UIImage(systemName: "record.circle.fill"),
                                                         selectedImage: UIImage(systemName: "record.circle.fill"))
-        statsViewController.tabBarItem = UITabBarItem(title: "Statistic",
+        statsViewController.tabBarItem = UITabBarItem(title: NSLocalizedString("statisticsTabTitle", comment: ""),
                                                       image: UIImage(systemName: "hare.fill"),
                                                       selectedImage: UIImage(systemName: "hare.fill"))
         tabBar.tintColor = .ypBlue

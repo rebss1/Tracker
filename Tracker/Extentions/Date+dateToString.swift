@@ -10,7 +10,7 @@ import Foundation
 extension Date {
     private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "EEEE"
+        formatter.dateFormat = NSLocalizedString("dateFormat", comment: "")
         formatter.locale = Locale(identifier: "en")
         return formatter
     }()

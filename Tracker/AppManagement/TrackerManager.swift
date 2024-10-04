@@ -17,8 +17,10 @@ final class TrackerManager {
     private(set) var week: [DayOfWeekSwitch]
     private(set) var error: String?
     private(set) var newTracker: NewTracker
+    private(set) var filters: [Filter] = Filter.allCases
+    private(set) var filter: Filter = Filter.all
     private let defaultWeek = DayOfWeek.allCases.map { DayOfWeekSwitch(dayOfWeek: $0, isEnabled: false) }
-    private let defaultNewTracker = NewTracker(frequency: .regular, name: "", color: "", emoji: "", schedule: "", categoryName: "")
+    private let defaultNewTracker = NewTracker(frequency: .regular, name: "", color: "", emoji: "", schedule: "", categoryName: "", createdAt: Date())
     
     private init() {
         self.week = defaultWeek
@@ -33,19 +35,52 @@ final class TrackerManager {
         && !newTracker.color.isEmpty
     }
     
+    var trackers: [TrackerCategory] {
+        var pinnedTrackers: [Tracker] = []
+        let pinnedCategoryName = NSLocalizedString("pinned", comment: "")
+        var categories = storage.getCategories().map {
+            TrackerCategory(
+                title: $0.title,
+                trackers: $0.trackers
+                    .filter {
+                        if $0.categoryName == pinnedCategoryName {
+                            pinnedTrackers.append($0)
+                            return false
+                        }
+                        return true
+                    }
+            )
+        }
+        let pinnedCategory = TrackerCategory(title: pinnedCategoryName, trackers: pinnedTrackers)
+        categories.insert(pinnedCategory, at: 0)
+        return categories
+    }
+    
     var filteredTrackers: [TrackerCategory] {
-        storage.getCategories().map {
+        let categories = trackers.map {
             TrackerCategory(title: $0.title,
-                            trackers: $0.trackers.filter {
-                
-                if $0.schedule.isEmpty {
-                    return true
-                }
-                let schedule = DayOfWeek.stringToSchedule(scheduleString: $0.schedule).map { String(describing: $0.dayOfWeek)}
-                let selectedDayOfWeek = selectedDay.dateToString()
-                return schedule.contains(selectedDayOfWeek)
-            })
+                            trackers: $0.trackers
+                .filter {
+                    if $0.schedule.isEmpty {
+                        return true
+                    }
+                    let schedule = DayOfWeek.stringToSchedule(scheduleString: $0.schedule).map { String(describing: $0.dayOfWeek)}
+                    let selectedDayOfWeek = selectedDay.dateToString()
+                    return schedule.contains(selectedDayOfWeek)
+                }.filter {
+                    switch filter {
+                    case .all:
+                        return true
+                    case .today:
+                        return true
+                    case .finished:
+                        return isTrackerCompleteForSelectedDay(trackerUUID: $0.id)
+                    case .unfinished:
+                        return !isTrackerCompleteForSelectedDay(trackerUUID: $0.id)
+                    }
+                })
         } .filter { !$0.trackers.isEmpty }
+        return categories
     }
     
     // MARK: - Trackers list methods
@@ -60,9 +95,9 @@ final class TrackerManager {
         updateTrackers()
     }
     
-    func isTrackerCompleteForSelectedDay(trackerUUID: UUID) -> Int {
+    func isTrackerCompleteForSelectedDay(trackerUUID: UUID) -> Bool {
         let records = storage.getRecords(of: trackerUUID)
-        return records.firstIndex(where: { Calendar.current.isDate($0.date, equalTo: selectedDay, toGranularity: .day) }) ?? -1
+        return records.first { Calendar.current.isDate($0.date, equalTo: selectedDay, toGranularity: .day) } != nil
     }
     
     // MARK: - Creation methods
@@ -73,6 +108,18 @@ final class TrackerManager {
     
     func updateCreation() {
         NotificationCenter.default.post(name: TrackerCreationViewController.reloadCollection, object: self)
+    }
+    
+    func resetDatePicker() {
+        NotificationCenter.default.post(name: TrackerViewController.resetDatePicker, object: self)
+    }
+    
+    func updateCategories() {
+        NotificationCenter.default.post(name: CategoryViewController.reloadCollection, object: self)
+    }
+    
+    func updateFilters() {
+        NotificationCenter.default.post(name: FilterViewController.reloadCollection, object: self)
     }
     
     func createTracker(category: String) {
@@ -121,12 +168,62 @@ final class TrackerManager {
         storage.getRecords(of: trackerID).count
     }
     
+    func getAllTrackersCount() -> Int {
+        storage.getAllTrackers().count
+    }
+    
+    func getAllRecordsCount() -> Int {
+        storage.getAllRecords().count
+    }
+    
+    func getTracker(by indexPath: IndexPath) -> Tracker {
+        filteredTrackers[indexPath.section].trackers[indexPath.row]
+    }
+
+    func getCategory(by indexPath: IndexPath) -> TrackerCategory {
+        storage.getCategories()[indexPath.section]
+    }
+    
+    func pinTracker(with indexPath: IndexPath) {
+        let tracker = getTracker(by: indexPath)
+        storage.pinTracker(with: tracker.id)
+        updateTrackers()
+    }
+
+    func unpinTracker(with indexPath: IndexPath) {
+        let tracker = getTracker(by: indexPath)
+        storage.unpinTracker(with: tracker.id)
+        updateTrackers()
+    }
+
+    func deleteTracker(with indexPath: IndexPath) {
+        let tracker = getTracker(by: indexPath)
+        storage.deleteTracker(with: tracker.id)
+        updateTrackers()
+    }
+    
     func setError(error: String?) {
         self.error = error
     }
     
-    func reset() {
-        newTracker = defaultNewTracker
+    func reset(_ tracker: Tracker? = nil, categoryName: String) {
         week = defaultWeek
+        if let tracker {
+            self.newTracker = NewTracker(from: tracker)
+        } else {
+            newTracker = defaultNewTracker
+        }
+        changeCategory(categoryName: categoryName)
+    }
+    
+    func addFilter(indexPath: IndexPath) {
+        filter = filters[indexPath.row]
+        if filter == .today {
+            resetDatePicker()
+            changeSelectedDay(selectedDay: Date())
+        } else {
+            updateTrackers()
+        }
+        updateFilters()
     }
 }

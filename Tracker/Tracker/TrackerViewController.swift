@@ -31,7 +31,7 @@ final class TrackerViewController: UIViewController {
         collectionView.register(TrackerCell.self,
                                 forCellWithReuseIdentifier: TrackerCell.identifier)
         collectionView.allowsMultipleSelection = false
-        collectionView.backgroundColor = .ypWhite
+        collectionView.backgroundColor = .clear
         collectionView.delegate = self
         collectionView.dataSource = self
         return collectionView
@@ -79,6 +79,7 @@ final class TrackerViewController: UIViewController {
     }
     
     private func setUpViews() {
+        view.backgroundColor = .ypWhite
         view.addSubviews([collectionView, filterButton])
         
         filterButton.isHidden = trackerManager.filteredTrackers.count == 0

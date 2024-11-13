@@ -40,7 +40,7 @@ final class TrackerCreationViewController: UIViewController {
     }
     
     private func setUp() {
-        navigationItem.title = "New tracker"
+        navigationItem.title = NSLocalizedString("newtrackerCreationTitle", comment: "")
         view.backgroundColor = .ypWhite
         view.addSubviews([collectionView])
         
@@ -256,9 +256,10 @@ extension TrackerCreationViewController: UICollectionViewDelegateFlowLayout {
 
 extension TrackerCreationViewController: CollectionFooterDelegate {
     func didTapCreateButton() {
+        self.view.endEditing(true)
         trackerManager.createTracker(category: trackerManager.newTracker.categoryName)
-        let presentingViewController = self.presentingViewController
-        presentingViewController?.presentingViewController?.dismiss(animated: true)
+        self.presentingViewController?.dismiss(animated: true)
+        self.presentingViewController?.presentingViewController?.dismiss(animated: true)
     }
 }
 

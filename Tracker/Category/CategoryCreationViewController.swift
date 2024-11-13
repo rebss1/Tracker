@@ -30,7 +30,7 @@ final class CategoryCreationViewController: UIViewController {
     }()
     
     private lazy var doneButton = Button(
-        title: "Done",
+        title: NSLocalizedString("doneButtonTitle", comment: ""),
         style: .normal,
         color: .ypBlack
     ) {
@@ -60,7 +60,7 @@ final class CategoryCreationViewController: UIViewController {
     // MARK: - Private Methods
     
     private func setUp() {
-        navigationItem.title = "New category"
+        navigationItem.title = NSLocalizedString("categoryCreationTitle", comment: "")
         
         view.backgroundColor = .ypWhite
         doneButton.isEnabled = false

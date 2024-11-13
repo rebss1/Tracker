@@ -92,6 +92,31 @@ final class Storage: StorageProtocol {
         saveContext()
     }
     
+    func pinTracker(with trackerId: UUID) {
+        let pinnedCategoryName = NSLocalizedString("pinned", comment: "")
+        let trackerEntity = getTracker(by: trackerId)
+        guard let trackerEntity else { return }
+        trackerEntity.categoryName = pinnedCategoryName
+        
+        saveContext()
+    }
+
+    func unpinTracker(with trackerId: UUID) {
+        let trackerEntity = getTracker(by: trackerId)
+        guard let trackerEntity else { return }
+        trackerEntity.categoryName = ""
+        
+        saveContext()
+    }
+
+    func deleteTracker(with trackerId: UUID) {
+        let trackerEntity = getTracker(by: trackerId)
+        guard let trackerEntity else { return }
+        context.delete(trackerEntity)
+       
+        saveContext()
+    }
+    
     //MARK: - Get Methods
     
     private func getTracker(by id: UUID) -> TrackerCoreData? {
@@ -153,7 +178,6 @@ final class Storage: StorageProtocol {
     
     func getCategories() -> [TrackerCategory] {
         let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
-        
         do {
             let categoryEntities = try context.fetch(fetchRequest)
             return categoryEntities.map {
@@ -163,6 +187,28 @@ final class Storage: StorageProtocol {
                 return TrackerCategory(title: $0.title ?? "",
                                        trackers: trackers ?? [])
             }
+        } catch let error as NSError {
+            print(error.userInfo)
+            return []
+        }
+    }
+    
+    func getAllTrackers() -> [Tracker] {
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+        do {
+            let recordEntities = try context.fetch(fetchRequest)
+            return recordEntities.map { Tracker(from: $0) }
+        } catch let error as NSError {
+            print(error.userInfo)
+            return []
+        }
+    }
+    
+    func getAllRecords() -> [TrackerRecord] {
+        let fetchRequest: NSFetchRequest<TrackerRecordCoreData> = TrackerRecordCoreData.fetchRequest()
+        do {
+            let recordEntities = try context.fetch(fetchRequest)
+            return recordEntities.map { TrackerRecord(from: $0) }
         } catch let error as NSError {
             print(error.userInfo)
             return []

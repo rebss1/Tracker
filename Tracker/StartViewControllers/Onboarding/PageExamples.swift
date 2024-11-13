@@ -15,9 +15,9 @@ enum PageExamples: Int, CaseIterable {
     var buttonTitle: String {
         switch self {
         case .first:
-            return "Track just what you want"
+            return NSLocalizedString("onboardingTitleOne", comment: "")
         case .second:
-            return "Even if it's not liters of water and yoga"
+            return NSLocalizedString("onboardingTitleTwo", comment: "")
         }
     }
     
